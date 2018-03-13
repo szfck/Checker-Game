@@ -3,15 +3,22 @@
 
 #include "Constant.h"
 #include "Strategy.h"
+#include <string>
 
 namespace game {
 
   class Player {
     public:
 
-      int type; // User type
+      std::string name;
+
+      int type;
 
       Strategy* strategy; // Pointer to strategy
+
+      Player(std::string name, int type, Strategy* strategy);
+
+      Cell play(const Board& board);
 
   };
   

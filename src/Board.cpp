@@ -1,5 +1,6 @@
 #include "Board.h"
 #include "Constant.h"
+#include <cassert>
 
 namespace game {
 
@@ -7,11 +8,13 @@ namespace game {
 
   }
   
-  Board::Board(int row, int col): row(row), col(col) {
-    board.init(row, col);
+  Board::Board(int row, int col) {
+    init(row, col);
   }
 
   void Board::init(int row, int col) {
+    this->row = row;
+    this->col = col;
     board.resize(row + 1, std::vector<Cell>(col + 1));
     for (int i = 1; i <= row; i++) {
       for (int j = 1; j <= col; j++) {

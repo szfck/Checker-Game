@@ -7,16 +7,6 @@
 namespace game {
 
   class Board {
-    private:
-
-      /** 
-       * initialization
-       * 
-       * @param row
-       * @param col
-      */ 
-      void init(int row, int col);
-
     public:
 
       std::vector<std::vector<Cell>> board;
@@ -26,6 +16,14 @@ namespace game {
       Board();
 
       Board(int row, int col);
+
+      /** 
+       * initialization
+       * 
+       * @param row
+       * @param col
+      */ 
+      void init(int row, int col);
 
       Cell get(int x, int y) const;
 

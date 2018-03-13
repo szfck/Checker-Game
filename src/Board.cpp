@@ -55,7 +55,7 @@ namespace game {
         } else if (get(i, j).status == PLAYER1) {
           line += '1';
         } else {
-          line += '*';
+          line += '_';
         }
       }
       std::cout << line << std::endl;

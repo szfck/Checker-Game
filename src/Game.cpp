@@ -91,14 +91,18 @@ namespace game {
 
       board.show();
 
-      std::pair<Cell, Cell> cells = getNextPlayer()->play(board);
+      Player* tmp = getNextPlayer();
+
+      printf("player: %d\n", tmp->type);
+
+      std::pair<Cell, Cell> cells = tmp->play(board);
 
       board.take(cells.first, cells.second);
 
       // board.set(cell.x, cell.y, cell);
 
     }
-
+    puts("!!!");
     showResult(result);
     board.show();
 

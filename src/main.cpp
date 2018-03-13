@@ -4,7 +4,7 @@ int main() {
   game::Game game;
 
   game.setDifficulty(1);
-  game.setHumanFirst(false);
+  game.setHumanFirst(true);
 
   game.run();
 

@@ -19,7 +19,7 @@ namespace game {
        * @param type The user type
        * @return The next cell to take
       */
-      virtual Cell play(const Board& board, int type) = 0;
+      virtual std::pair<Cell, Cell> play(const Board& board, int type) = 0;
   };
 
   // Human strategy
@@ -34,7 +34,7 @@ namespace game {
        * @param type The user type
        * @return The next cell to take
       */
-      Cell play(const Board& board, int type);
+      std::pair<Cell, Cell> play(const Board& board, int type);
 
   };
 
@@ -54,7 +54,7 @@ namespace game {
        * @param type The user type
        * @return The next cell to take
       */
-      Cell play(const Board& board, int type);
+      std::pair<Cell, Cell> play(const Board& board, int type);
 
   }; 
 }

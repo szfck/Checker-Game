@@ -17,7 +17,39 @@ namespace game {
     board.init(6, 6);
   }
 
+  bool Game::hasNextLegalStep(Player* player) {
+    for (int i = 1; i <= board.row; i++) {
+      for (int j = 1; j <= board.col; j++) {
+        if (board.get(i, j).status == player->type 
+            && !board.getNextLegalCells(board.get(i, j)).empty()) {
+              return true;
+            }
+      }
+    }
+    return false;
+  }
+
+  int Game::cellRemain(Player* player) {
+    int count = 0;
+    for (int i = 1; i <= board.row; i++) {
+      for (int j = 1; j <= board.col; j++) {
+        if (board.get(i, j).status == player->type) {
+          count++;
+        }
+      }
+    }
+    return count;
+  }
+
   Player* Game::getNextPlayer() {
+
+    if (!hasNextLegalStep(currentPlayer)) {
+     if (currentPlayer->type == PLAYER1) {
+        currentPlayer = player2;
+      } else {
+        currentPlayer = player1;
+      } 
+    }
 
     Player* tmp = currentPlayer;
 
@@ -27,6 +59,7 @@ namespace game {
       currentPlayer = player1;
     }
     return tmp;
+
   }
   
   void Game::setHumanFirst (bool humanFirst) {
@@ -54,15 +87,20 @@ namespace game {
 
     int result;
 
-    while ((result = isFinished(board)) == NONE) {
-
-      Cell cell = getNextPlayer()->play(board);
-      board.set(cell.x, cell.y, cell);
+    while ((result = isFinished()) == NONE) {
 
       board.show();
+
+      std::pair<Cell, Cell> cells = getNextPlayer()->play(board);
+
+      board.take(cells.first, cells.second);
+
+      // board.set(cell.x, cell.y, cell);
+
     }
 
     showResult(result);
+    board.show();
 
   }
 
@@ -78,14 +116,27 @@ namespace game {
     }
   }
 
-  int Game::isFinished(const Board& board) {
+  int Game::isFinished() {
     // TODO check board status
     int res;
-    if (rand() % 10 > 6) {
-      res = rand() % (NONE - FIRSTWIN) + FIRSTWIN;
+
+    int player1CellNumber = cellRemain(player1);
+    int player2CellNumber = cellRemain(player2);
+    if (player1CellNumber == 0) return SECONDWIN;
+    else if (player2CellNumber == 0) return FIRSTWIN;
+    else if (!hasNextLegalStep(player1) && !hasNextLegalStep(player2)) {
+      if (player1CellNumber > player2CellNumber) return FIRSTWIN;
+      else if (player1CellNumber < player2CellNumber) return SECONDWIN;
+      else return DRAW;
     } else {
-      res = NONE;
+      return NONE;
     }
+    // if (rand() % 10 > 6) {
+    //   res = rand() % (NONE - FIRSTWIN) + FIRSTWIN;
+    // } else {
+    //   res = NONE;
+    // }
     return res;
   }
+
 }

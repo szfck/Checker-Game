@@ -62,4 +62,67 @@ namespace game {
     }
     std::cout << std::endl;
   }
+
+  bool Board::isValidType(int x, int y, int type) const {
+    // printf("row :%d, col:%d\n", row, col);
+    // printf("get status : %d\n", get(x,y).status);
+    return x >= 1 && x <= row && y >= 1 && y <= col && get(x, y).status == type;
+  }
+
+  std::vector<Cell> Board::getNextLegalCells(Cell cell) const {
+
+    assert(cell.status != EMPTY);
+
+    int dir[2][2][2] = {
+      { // player1
+        {1, 1}, // y axis
+        {1, -1} // x axis
+      }, 
+      { // player2
+        {-1, -1}, // y axis
+        {1, -1} // x axis
+      }
+    };
+    
+    std::vector<Cell> legalCells;
+
+    // no jump
+    for (int i = 0; i < 2; i++) {
+      int dx = dir[cell.status][0][i] + cell.x;
+      int dy = dir[cell.status][1][i] + cell.y;
+
+      if (isValidType(dx, dy, EMPTY)) {
+        legalCells.push_back(get(dx, dy));
+      }
+    }
+
+    // jump over
+    for (int i = 0; i < 2; i++) {
+      int mx = dir[cell.status][0][i] + cell.x;
+      int my = dir[cell.status][1][i] + cell.y;
+
+      int dx = dir[cell.status][0][i] + mx;
+      int dy = dir[cell.status][1][i] + my;
+
+      // if jump over the enemy to an empty cell
+      if (isValidType(dx, dy, EMPTY) && isValidType(mx, my, cell.status ^ 1)) {
+        legalCells.push_back(get(dx, dy));
+      }
+    }
+
+    return legalCells;
+
+  }
+  
+
+  void Board::take(Cell start, Cell dest) {
+    if (abs(start.x - dest.x) != 1) {
+      int x = (start.x + dest.x) / 2;
+      int y = (start.y + dest.y) / 2;
+      set(x, y, Cell(x, y, EMPTY));
+    }
+    set(start.x, start.y, Cell(start.x, start.y, EMPTY));
+    set(dest.x, dest.y, Cell(dest.x, dest.y, start.status)); 
+  }
+
 }

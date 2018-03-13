@@ -5,6 +5,8 @@
 #include "Strategy.h"
 #include "Player.h"
 #include "Board.h"
+#include "Cell.h"
+#include <vector>
 
 namespace game {
 
@@ -15,6 +17,10 @@ namespace game {
 
       Player* getNextPlayer();
 
+      bool hasNextLegalStep(Player* player);
+
+      int cellRemain(Player* player);
+      
       Board board;
 
     public:
@@ -49,18 +55,11 @@ namespace game {
       void setDifficulty(int difficulty);
 
       /**
-       * Set game board
-       * @param board
-      */
-      void setBoard(const Board& board);
-
-      /**
        * Check if the game is finished or not
        * 
-       * @param board Board instance
        * @return Game status FIRSTWIN/SECONDWIN/DRAW/NONE
       */
-      int isFinished(const Board& board);
+      int isFinished();
 
       /**
        * Show the game result

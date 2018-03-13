@@ -18,7 +18,7 @@ namespace game {
 
       Player(std::string name, int type, Strategy* strategy);
 
-      Cell play(const Board& board);
+      std::pair<Cell, Cell> play(const Board& board);
 
   };
   

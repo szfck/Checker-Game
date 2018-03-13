@@ -10,7 +10,7 @@ namespace game {
     this->strategy = strategy;
   }
 
-  Cell Player::play(const Board& board) {
+  std::pair<Cell, Cell> Player::play(const Board& board) {
     return strategy->play(board, type);
   }
 

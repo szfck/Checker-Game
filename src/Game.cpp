@@ -10,7 +10,7 @@ namespace game {
 
     srand(time(NULL));
 
-    player1 = new Player("Human player", PLAYER1, new PlayerStrategy());
+    player1 = new Player("Human player", PLAYER1, new PlayerStrategy);
 
     player2 = new Player("AI Player", PLAYER2, new AIStrategy);
 
@@ -42,11 +42,11 @@ namespace game {
   void Game::setDifficulty(int difficulty) {
     this->difficulty = difficulty;
     if (difficulty == 1) { // easy, 67% error rate
-      error_rate = 0.67;
+      static_cast<AIStrategy*>(player2->strategy)->error_rate = 0.67;
     } else if (difficulty == 2) { // medium, 33% error rate
-      error_rate = 0.33;
+      static_cast<AIStrategy*>(player2->strategy)->error_rate = 0.33;
     } else { // hard, no error
-      error_rate = 0.0;
+      static_cast<AIStrategy*>(player2->strategy)->error_rate = 0.0;
     }
   }
 
@@ -59,6 +59,7 @@ namespace game {
       Cell cell = getNextPlayer()->play(board);
       board.set(cell.x, cell.y, cell);
 
+      board.show();
     }
 
     showResult(result);
@@ -79,8 +80,6 @@ namespace game {
 
   int Game::isFinished(const Board& board) {
     // TODO check board status
-    counter++;
-    if (counter > 10) return DRAW;
     int res;
     if (rand() % 10 > 6) {
       res = rand() % (NONE - FIRSTWIN) + FIRSTWIN;

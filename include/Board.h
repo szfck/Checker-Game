@@ -29,6 +29,11 @@ namespace game {
 
       void set(int x, int y, Cell cell);
 
+      /**
+       * Show the board in command line
+      */
+      void show();
+
   };
   
 }

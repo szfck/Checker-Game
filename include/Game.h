@@ -10,10 +10,6 @@ namespace game {
 
   class Game {
     private:
-      int counter = 0;
-      // control alpha beta min max alg difficulty
-      // the higher the error_rate is, eaiser the game is
-      double error_rate;
 
       Player* currentPlayer;
 

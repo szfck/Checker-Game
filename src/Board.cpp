@@ -45,23 +45,6 @@ namespace game {
     assert(x >= 1 && x <= row && y >= 1 && y <= col);
     board[x][y] = cell;
   }
-  
-  void Board::show() {
-    for (int i = row; i >= 1; i--) {
-      std::string line = "";
-      for (int j = 1; j <= col; j++) {
-        if (get(i, j).status == PLAYER2) {
-          line += '2';
-        } else if (get(i, j).status == PLAYER1) {
-          line += '1';
-        } else {
-          line += '_';
-        }
-      }
-      std::cout << line << std::endl;
-    }
-    std::cout << std::endl;
-  }
 
   bool Board::isValidType(int x, int y, int type) const {
     // printf("row :%d, col:%d\n", row, col);

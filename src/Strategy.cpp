@@ -3,8 +3,8 @@
 
 namespace game {
 
+  // TODO receive UI click
   std::pair<Cell, Cell> PlayerStrategy::play(const Board& board, int type) {
-    // TODO get user input
     printf("human playing...\n\n");
 
     int sx, sy, dx, dy;
@@ -44,13 +44,11 @@ namespace game {
     }
 
     return std::make_pair(board.get(sx, sy), board.get(dx, dy));
-    // return Cell(1, 1, EMPTY);
   }
 
   std::pair<Cell, Cell> AIStrategy::play(const Board& board, int type) {
     // TODO using error_rate to implement alpha beta alg 
     // printf("AI playing...\n\n");
-    // return Cell(2, 2, EMPTY);
     auto mock = new PlayerStrategy;
     return mock->play(board, type);
   }

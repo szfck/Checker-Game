@@ -31,11 +31,6 @@ namespace game {
       void set(int x, int y, Cell cell);
 
       /**
-       * Show the board in command line
-      */
-      void show();
-
-      /**
        * Take the cell from start to dest
        * Update the board status
        * 

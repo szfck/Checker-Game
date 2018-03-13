@@ -12,9 +12,14 @@ int main(int argc, char *argv[])
 
     game::Game game;
 
+    // TODO show diff pane
     game.setDifficulty(1);
+
+    // TODO show first pane
     game.setHumanFirst(true);
 
+
+    // TODO main pane
     game.run();
 
     return 0;

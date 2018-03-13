@@ -61,6 +61,10 @@ namespace game {
     return tmp;
 
   }
+
+  Player* Game::getCurrentPlayer() {
+    return currentPlayer;
+  }
   
   void Game::setHumanFirst (bool humanFirst) {
 
@@ -89,7 +93,7 @@ namespace game {
 
     while ((result = isFinished()) == NONE) {
 
-      board.show();
+      showBoard();
 
       Player* tmp = getNextPlayer();
 
@@ -99,15 +103,15 @@ namespace game {
 
       board.take(cells.first, cells.second);
 
-      // board.set(cell.x, cell.y, cell);
-
     }
-    puts("!!!");
+
     showResult(result);
-    board.show();
+
+    showBoard();
 
   }
 
+  // TODO change to UI part
   void Game::showResult(int result) {
     if (result == FIRSTWIN) {
       printf("%s wins\n", player1->name.c_str());
@@ -121,7 +125,6 @@ namespace game {
   }
 
   int Game::isFinished() {
-    // TODO check board status
     int res;
 
     int player1CellNumber = cellRemain(player1);
@@ -135,12 +138,24 @@ namespace game {
     } else {
       return NONE;
     }
-    // if (rand() % 10 > 6) {
-    //   res = rand() % (NONE - FIRSTWIN) + FIRSTWIN;
-    // } else {
-    //   res = NONE;
-    // }
     return res;
   }
 
+  // TODO change to UI show
+  void Game::showBoard() {
+    for (int i = board.row; i >= 1; i--) {
+      std::string line = "";
+      for (int j = 1; j <= board.col; j++) {
+        if (board.get(i, j).status == PLAYER2) {
+          line += '2';
+        } else if (board.get(i, j).status == PLAYER1) {
+          line += '1';
+        } else {
+          line += '_';
+        }
+      }
+      std::cout << line << std::endl;
+    }
+    std::cout << std::endl;
+  }
 }

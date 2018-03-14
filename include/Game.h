@@ -18,10 +18,10 @@ namespace game {
       bool hasNextLegalStep(Player* player);
 
       int cellRemain(Player* player);
-      
-      Board board;
 
     public:
+
+      Board board;
 
       // Game difficulty from 1(easy) to 3(hard) int difficulty; 
       int difficulty;

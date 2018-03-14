@@ -40,5 +40,9 @@ HEADERS += $$files(*.h, true)
 HEADERS += $$files($$PWD/../include/*.h, true)
 
 FORMS += $$files(*.ui, true)
+
+RESOURCES += \
+    Images.qrc
+
 #FORMS += \
 #        mainwindow.ui

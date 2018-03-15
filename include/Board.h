@@ -52,6 +52,26 @@ namespace game {
       */ 
       std::vector<Cell> getNextLegalCells(Cell cell) const;
 
+      /**
+       * @brief terminateTest
+       * @return true if is terminated, false otherwise
+       */
+      bool terminateTest() const;
+
+      /**
+       * @brief utility
+       * @return utility value, win(1), lose(-1), draw(0)
+       */
+      int utility() const;
+
+      /**
+       * @brief hasNextLegalStep
+       * @param type
+       * @return true if player of tpye has next move, false otherwise
+       */
+      bool hasNextLegalStep(int type) const;
+
+      int cellRemain(int type) const;
   };
   
 }

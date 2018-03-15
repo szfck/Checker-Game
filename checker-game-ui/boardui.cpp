@@ -3,6 +3,7 @@
 #include <set>
 #include <QMessageBox>
 
+
 cellui::cellui(QWidget* parent) : QLabel(parent) {
     count = 0;
     this->cell = cell;
@@ -24,13 +25,13 @@ void cellui::mousePressEvent(QMouseEvent *e) {
 
 void cellui::setOne() {
     this->clear();
-    this->setPixmap(QPixmap(":/assets/pawn_white.svg"));
+    this->setPixmap(QPixmap(":/assets/pawn_black.svg"));
     this->displayBackground();
 }
 
 void cellui::setTwo() {
     this->clear();
-    this->setPixmap(QPixmap(":/assets/pawn_black.svg"));
+    this->setPixmap(QPixmap(":/assets/pawn_white.svg"));
     this->displayBackground();
 }
 
@@ -55,7 +56,7 @@ void cellui::setEmpty() {
 }
 
 void cellui::displayBackground() {
-    if((cell.x + cell.y) % 2) {
+    if((cell.x + cell.y) % 2 == 0) {
         this->setStyleSheet("QLabel {background-color: rgb(120, 120, 90);}:hover{background-color: rgb(170,85,127);}");
     } else {
         this->setStyleSheet("QLabel {background-color: rgb(211, 211, 158);}:hover{background-color: rgb(170,95,127);}");
@@ -81,6 +82,8 @@ boardui::~boardui() {
 
 void boardui::newgame() {
     myGame.board.init(6, 6);
+    display();
+
     if (myGame.getCurrentPlayer()->type == PLAYER2) {
         aiplay();
     }
@@ -124,17 +127,50 @@ void boardui::display() {
 
 }
 
-void boardui::aiplay() {
-    qDebug("ai is playing!");
+
+MyObject::MyObject() {
+
+}
+
+MyObject::~MyObject() {
+
+}
+
+void MyObject::first() {
     std::pair<game::Cell, game::Cell> next = myGame.player2->play(myGame.board);
     myGame.board.take(next.first, next.second);
+
+    emit getresult();
+}
+
+void boardui::aiplay() {
+    qDebug("ai is playing!");
+
+    MyObject* my = new MyObject();
+    QThread *thread = new QThread;
+    my->moveToThread(thread);
+
+    thread->start();
+    connect(thread, SIGNAL(started()), my, SLOT(first()));
+    connect(my, SIGNAL(getresult()), this, SLOT(displayslot()));
+
+}
+
+void boardui::displayslot() {
+    this->display();
+    int result = myGame.isFinished();
+    if (result != NONE) {
+        showResult(result);
+    }
     myGame.getNextPlayer();
 }
 
+
 void boardui::click(cellui *current) {
     qDebug("click (%d,%d)\n", current->cell.x, current->cell.y);
-    game::Cell cell = current->cell;
 
+    game::Cell cell = current->cell;
+    qDebug() << "current player" << myGame.getCurrentPlayer()->type;
 
     // not human turn
     if (myGame.getCurrentPlayer()->type != PLAYER1) return;
@@ -159,6 +195,7 @@ void boardui::click(cellui *current) {
             pressCount = 0;
             display();
             click(current);
+            return;
         }
 
         auto list = myGame.board.getNextLegalCells(previous);
@@ -167,23 +204,28 @@ void boardui::click(cellui *current) {
             pressCount = 0;
             myGame.board.take(previous, cell);
             display();
+            qDebug("displaying!!!!!");
+
             myGame.getNextPlayer();
 
             int result = myGame.isFinished();
             if (result != NONE) {
                 showResult(result);
+                return;
             }
 
+            qDebug() << "result" << result;
+
             if (myGame.getCurrentPlayer()->type == PLAYER2) {
+
                 aiplay();
-                display();
+
             }
         }
 
     } else {
         qDebug("!!!this is a press but!!!");
     }
-
 }
 
 void boardui::showResult(int result) {

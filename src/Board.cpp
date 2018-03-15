@@ -2,6 +2,7 @@
 #include "Constant.h"
 #include <cassert>
 #include <iostream>
+#include <QDebug>
 
 namespace game {
 
@@ -106,6 +107,57 @@ namespace game {
     }
     set(start.x, start.y, Cell(start.x, start.y, EMPTY));
     set(dest.x, dest.y, Cell(dest.x, dest.y, start.status)); 
+  }
+
+  int Board::cellRemain(int type) const {
+      int count = 0;
+      for (int i = 1; i <= row; i++) {
+        for (int j = 1; j <= col; j++) {
+          if (get(i, j).status == type) {
+            count++;
+          }
+        }
+      }
+      return count;
+  }
+
+  bool Board::hasNextLegalStep(int type) const {
+      for (int i = 1; i <= row; i++) {
+        for (int j = 1; j <= col; j++) {
+          if (get(i, j).status == type
+              && !getNextLegalCells(get(i, j)).empty()) {
+                return true;
+              }
+        }
+      }
+      return false;
+  }
+
+  int Board::utility() const {
+      int res;
+      int player1CellNumber = cellRemain(PLAYER1);
+      int player2CellNumber = cellRemain(PLAYER2);
+//       qDebug() << "player1 left " << player1CellNumber;
+//       qDebug() << "player2 left " << player2CellNumber;
+
+//       qDebug() << "player1 has next " << hasNextLegalStep(PLAYER1);
+//       qDebug() << "player2 has next " << hasNextLegalStep(PLAYER2);
+
+
+      if (player1CellNumber == 0) return SECONDWIN;
+      else if (player2CellNumber == 0) return FIRSTWIN;
+      else if (!hasNextLegalStep(PLAYER1) && !hasNextLegalStep(PLAYER2)) {
+        if (player1CellNumber > player2CellNumber) return FIRSTWIN;
+        else if (player1CellNumber < player2CellNumber) return SECONDWIN;
+        else return DRAW;
+      } else {
+        return NONE;
+      }
+      return res;
+  }
+
+  bool Board::terminateTest() const {
+      return utility() != NONE;
   }
 
 }

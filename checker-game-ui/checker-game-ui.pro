@@ -30,7 +30,8 @@ SOURCES += \
         $$files(../src/*.cpp, true)
 
 HEADERS += \
-        $$files(*.h, true)
+        $$files(*.h, true) \
+
 
 
 HEADERS += \

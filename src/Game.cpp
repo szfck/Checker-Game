@@ -3,6 +3,7 @@
 #include "Board.h"
 #include <iostream>
 #include <time.h>
+#include <QDebug>
 
 namespace game {
 
@@ -17,48 +18,24 @@ namespace game {
     board.init(6, 6);
   }
 
-  bool Game::hasNextLegalStep(Player* player) {
-    for (int i = 1; i <= board.row; i++) {
-      for (int j = 1; j <= board.col; j++) {
-        if (board.get(i, j).status == player->type 
-            && !board.getNextLegalCells(board.get(i, j)).empty()) {
-              return true;
-            }
-      }
-    }
-    return false;
-  }
-
-  int Game::cellRemain(Player* player) {
-    int count = 0;
-    for (int i = 1; i <= board.row; i++) {
-      for (int j = 1; j <= board.col; j++) {
-        if (board.get(i, j).status == player->type) {
-          count++;
-        }
-      }
-    }
-    return count;
-  }
 
   Player* Game::getNextPlayer() {
-
-    if (!hasNextLegalStep(currentPlayer)) {
-     if (currentPlayer->type == PLAYER1) {
-        currentPlayer = player2;
-      } else {
-        currentPlayer = player1;
-      } 
-    }
-
-    Player* tmp = currentPlayer;
 
     if (currentPlayer->type == PLAYER1) {
       currentPlayer = player2;
     } else {
       currentPlayer = player1;
     }
-    return tmp;
+
+    if (!board.hasNextLegalStep(currentPlayer->type)) {
+     if (currentPlayer->type == PLAYER1) {
+        currentPlayer = player2;
+      } else {
+        currentPlayer = player1;
+      }
+    }
+
+    return currentPlayer;
 
   }
 
@@ -95,13 +72,15 @@ namespace game {
 
       showBoard();
 
-      Player* tmp = getNextPlayer();
+      Player* tmp = getCurrentPlayer();
 
       printf("player: %d\n", tmp->type);
 
       std::pair<Cell, Cell> cells = tmp->play(board);
 
       board.take(cells.first, cells.second);
+
+      getNextPlayer();
 
     }
 
@@ -125,20 +104,25 @@ namespace game {
   }
 
   int Game::isFinished() {
-    int res;
+    return board.utility();
+//      int player1CellNumber = board.cellRemain(PLAYER1);
+//      int player2CellNumber = board.cellRemain(PLAYER2);
+//       qDebug() << "player1 left " << player1CellNumber;
+//       qDebug() << "player2 left " << player2CellNumber;
 
-    int player1CellNumber = cellRemain(player1);
-    int player2CellNumber = cellRemain(player2);
-    if (player1CellNumber == 0) return SECONDWIN;
-    else if (player2CellNumber == 0) return FIRSTWIN;
-    else if (!hasNextLegalStep(player1) && !hasNextLegalStep(player2)) {
-      if (player1CellNumber > player2CellNumber) return FIRSTWIN;
-      else if (player1CellNumber < player2CellNumber) return SECONDWIN;
-      else return DRAW;
-    } else {
-      return NONE;
-    }
-    return res;
+//       qDebug() << "player1 has next " << board.hasNextLegalStep(PLAYER1);
+//       qDebug() << "player2 has next " << board.hasNextLegalStep(PLAYER2);
+
+
+//      if (player1CellNumber == 0) return SECONDWIN;
+//      else if (player2CellNumber == 0) return FIRSTWIN;
+//      else if (!board.hasNextLegalStep(PLAYER1) && !board.hasNextLegalStep(PLAYER2)) {
+//        if (player1CellNumber > player2CellNumber) return FIRSTWIN;
+//        else if (player1CellNumber < player2CellNumber) return SECONDWIN;
+//        else return DRAW;
+//      } else {
+//        return NONE;
+//      }
   }
 
   // TODO change to UI show

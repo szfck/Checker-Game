@@ -40,6 +40,17 @@ namespace game {
 
   // AI strategy
   class AIStrategy: public Strategy {
+    private:
+    
+      int count = 0;
+
+      std::pair<Cell, Cell> alpha_beta_search(const Board& board, int currentPlayer);
+
+      std::vector<std::pair<Cell, Cell>> actions(const Board& board, int currentPlayer);
+
+      std::pair<int, std::pair<Cell, Cell>> max_value(const Board& board, int currentPlayer, int alpha, int beta, int level);
+
+      std::pair<int, std::pair<Cell, Cell>> min_value(const Board& board, int currentPlayer, int alpha, int beta, int level);
 
     public:
 

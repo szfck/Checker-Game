@@ -3,6 +3,8 @@
 
 #include "Game.h"
 #include "Cell.h"
+#include <QObject>
+#include <QThread>
 #include <QLabel>
 
 extern game::Game myGame;
@@ -26,6 +28,7 @@ public:
 };
 
 class boardui : public QWidget {
+    Q_OBJECT
 private:
     int pressCount;
     game::Cell previous;
@@ -43,7 +46,25 @@ public:
     void click(cellui* current);
 
     void showResult(int result);
+public slots:
 
+    void displayslot();
+
+};
+
+class MyObject : public QObject {
+    Q_OBJECT
+
+    public:
+        MyObject();
+
+        ~MyObject();
+
+    public slots:
+        void first();
+
+    signals:
+        void getresult();
 };
 
 #endif // BOARDUI_H

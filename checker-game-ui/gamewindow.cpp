@@ -23,15 +23,16 @@ void gamewindow::handleButton() {
 
 
 void gamewindow::replay() {
-    myGame.board.init(6, 6);
     int diff = ui->difficultyComboBox->currentIndex() + 1;
     int firstplay = ui->firstplayComboBox->currentIndex() ^ 1;
-    board->display();
+
     qDebug("diff :%d\n", diff);
     qDebug("firstPlay: %d\n", firstplay);
 
     myGame.setDifficulty(diff);
     myGame.setHumanFirst(firstplay);
+
+    board->newgame();
 }
 
 void gamewindow::addboard() {

@@ -13,14 +13,13 @@ public:
     cellui(QWidget* parent);
     game::Cell cell;
 
+    void display();
 
     void setOne();
     void setTwo();
     void setRec();
     void setEmpty();
     void displayBackground();
-    void display();
-
     void mousePressEvent(QMouseEvent *e);
 
     ~cellui();
@@ -36,6 +35,10 @@ public:
     cellui* cells[7][7] = { { nullptr } };
 
     void display();
+
+    void aiplay();
+
+    void newgame();
 
     void click(cellui* current);
 

@@ -64,19 +64,6 @@ void cellui::displayBackground() {
 
 
 boardui::boardui(QWidget* parent) : QWidget(parent) {
-//    for (int i = 1; i <= 6; i++) {
-//        QString test = "";
-//        for (int j = 1; j <= 6; j++) {
-//            if (myGame.board.get(i, j).status == PLAYER1) {
-//                test += "1";
-//            } else if (myGame.board.get(i, j).status == PLAYER2) {
-//                test += "2";
-//            } else {
-//                test += "_";
-//            }
-//        }
-//        qDebug("%s", test.toStdString().c_str());
-//    }
     for (int i = 1; i <= 6; i++) {
         for (int j = 1; j <= 6; j++) {
             cells[i][j] = new cellui(this);
@@ -85,11 +72,20 @@ boardui::boardui(QWidget* parent) : QWidget(parent) {
             cells[i][j]->setGeometry(y, x, 85, 85);
         }
     }
-    display();
+//    display();
 }
 
 boardui::~boardui() {
 
+}
+
+void boardui::newgame() {
+    myGame.board.init(6, 6);
+    if (myGame.getCurrentPlayer()->type == PLAYER2) {
+        aiplay();
+    }
+
+    display();
 }
 
 void boardui::display() {
@@ -128,12 +124,20 @@ void boardui::display() {
 
 }
 
+void boardui::aiplay() {
+    qDebug("ai is playing!");
+    std::pair<game::Cell, game::Cell> next = myGame.player2->play(myGame.board);
+    myGame.board.take(next.first, next.second);
+    myGame.getNextPlayer();
+}
+
 void boardui::click(cellui *current) {
     qDebug("click (%d,%d)\n", current->cell.x, current->cell.y);
     game::Cell cell = current->cell;
 
+
     // not human turn
-//    if (myGame.getCurrentPlayer() != PLAYER1) return;
+    if (myGame.getCurrentPlayer()->type != PLAYER1) return;
 
     if (pressCount == 0) {
         if (cell.status != myGame.getCurrentPlayer()->type) return;
@@ -169,6 +173,11 @@ void boardui::click(cellui *current) {
             if (result != NONE) {
                 showResult(result);
             }
+
+            if (myGame.getCurrentPlayer()->type == PLAYER2) {
+                aiplay();
+                display();
+            }
         }
 
     } else {
@@ -192,56 +201,3 @@ void boardui::showResult(int result) {
         QMessageBox::about(NULL, "Game end", str);
     }
 }
-
-//void cellui::mousePressEvent(QMouseEvent *e) {
-//    if (cell.status == myGame.getCurrentPlayer()->type) {
-//        for (auto cell : vis) {
-//            tiles[cell.x][cell.y]->setEmpty();
-//        }
-//        vis.clear();
-
-//        if (cell.x == previous.x && cell.y == previous.y) {
-//            previous = game::Cell(-1, -1, EMPTY);
-//        } else {
-//            vis.clear();
-//            auto list = myGame.board.getNextLegalCells(tile->cell);
-//            for (auto cell : list) {
-//                tiles[cell.x][cell.y]->setRec();
-//            }
-//            vis = list;
-//            previous = cell;
-//        }
-//    } else if (previous.status != EMPTY){
-//        game::Cell next = game::Cell(-1, -1, EMPTY);
-//        for (auto cell : vis) {
-//            qDebug("%d %d", cell.x, cell.y);
-//            if (cell.x == cell.x && cell.y == cell.y) {
-//                next = cell;
-//            }
-//        }
-//        if (next.x != -1) {
-//            myGame.board.take(previous, next);
-//            updateBoard();
-//            myGame.getNextPlayer();
-//            previous = game::Cell(-1, -1, EMPTY);
-//            vis.clear();
-
-//            // TODO show node generated
-//            showMsg("lalalalaa\nsdsfdsfsf");
-//            int result = myGame.isFinished();
-//            if (result != NONE) {
-//                QString str = "";
-//                if (result == FIRSTWIN) {
-//                    str = "human win!";
-//                } else if (result == SECONDWIN) {
-//                    str = "AI win!";
-//                } else if (result == DRAW) {
-//                    str = "Draw!";
-//                } else {
-//                    str = "unknow result!";
-//                }
-//                QMessageBox::about(NULL, "Game end", str);
-//            }
-//        }
-//    }
-//}

@@ -49,8 +49,9 @@ namespace game {
   std::pair<Cell, Cell> AIStrategy::play(const Board& board, int type) {
     // TODO using error_rate to implement alpha beta alg 
     // printf("AI playing...\n\n");
-    auto mock = new PlayerStrategy;
-    return mock->play(board, type);
+//    auto mock = new PlayerStrategy;
+      return std::make_pair(board.get(5, 1), board.get(4, 2));
+//    return mock->play(board, type);
   }
 
 }

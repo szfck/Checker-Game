@@ -13,7 +13,11 @@ namespace game {
 
       Cell();
 
+       ~Cell();
+
       Cell(int x, int y, int status);
+
+      bool operator < (const Cell& o) const;
   };
   
 }

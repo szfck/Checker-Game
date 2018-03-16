@@ -68,7 +68,7 @@ namespace game {
 
     int result;
 
-    while ((result = isFinished()) == NONE) {
+    while (!board.isTerminate()) {
 
       showBoard();
 
@@ -103,26 +103,8 @@ namespace game {
     }
   }
 
-  int Game::isFinished() {
-    return board.utility();
-//      int player1CellNumber = board.cellRemain(PLAYER1);
-//      int player2CellNumber = board.cellRemain(PLAYER2);
-//       qDebug() << "player1 left " << player1CellNumber;
-//       qDebug() << "player2 left " << player2CellNumber;
-
-//       qDebug() << "player1 has next " << board.hasNextLegalStep(PLAYER1);
-//       qDebug() << "player2 has next " << board.hasNextLegalStep(PLAYER2);
-
-
-//      if (player1CellNumber == 0) return SECONDWIN;
-//      else if (player2CellNumber == 0) return FIRSTWIN;
-//      else if (!board.hasNextLegalStep(PLAYER1) && !board.hasNextLegalStep(PLAYER2)) {
-//        if (player1CellNumber > player2CellNumber) return FIRSTWIN;
-//        else if (player1CellNumber < player2CellNumber) return SECONDWIN;
-//        else return DRAW;
-//      } else {
-//        return NONE;
-//      }
+  int Game::gameStatus() {
+      return board.boardStatus();
   }
 
   // TODO change to UI show

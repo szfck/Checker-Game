@@ -76,7 +76,7 @@ namespace game {
 
       // printf("max function at %d!\n", level);
 
-      if (board.terminateTest()) return {board.utility(), {}};
+      if (board.isTerminate()) return {board.utility(PLAYER2), {}};
       int value = -1;
       Cell maxstart, maxdest;
       for (auto next : actions(board, currentPlayer)) {
@@ -106,7 +106,7 @@ namespace game {
 
       // printf("min function at %d!\n", level);
 
-      if (board.terminateTest()) return {board.utility(), {}};
+      if (board.isTerminate()) return {board.utility(PLAYER2), {}};
       int value = 1;
       Cell minstart, mindest;
       for (auto next : actions(board, currentPlayer)) {

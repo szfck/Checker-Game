@@ -61,10 +61,10 @@ class MyObject : public QObject {
         ~MyObject();
 
     public slots:
-        void first();
+        void compute();
 
     signals:
-        void getresult();
+        void computeFinish();
 };
 
 #endif // BOARDUI_H

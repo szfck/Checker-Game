@@ -56,21 +56,32 @@ namespace game {
        * @brief terminateTest
        * @return true if is terminated, false otherwise
        */
-      bool terminateTest() const;
+      bool isTerminate() const;
 
       /**
        * @brief utility
-       * @return utility value, win(1), lose(-1), draw(0)
+       * @return utility value, the higher the values is, the more possible will win
        */
-      int utility() const;
+      int utility(int type) const;
+
+      /**
+       * @brief boardStatus
+       * @return game status FIRSTWIN/SECONDWIN/DRAW/NONE
+       */
+      int boardStatus() const;
 
       /**
        * @brief hasNextLegalStep
-       * @param type
+       * @param type player type
        * @return true if player of tpye has next move, false otherwise
        */
       bool hasNextLegalStep(int type) const;
 
+      /**
+       * @brief cellRemain
+       * @param type player type
+       * @return how many player of type remain on the board
+       */
       int cellRemain(int type) const;
   };
   

@@ -133,8 +133,17 @@ namespace game {
       return false;
   }
 
-  int Board::utility() const {
-      int res;
+  // TODO
+  int Board::utility(int type) const {
+    return 1;
+  }
+
+
+  bool Board::isTerminate() const {
+      return boardStatus() != NONE;
+  }
+
+  int Board::boardStatus() const {
       int player1CellNumber = cellRemain(PLAYER1);
       int player2CellNumber = cellRemain(PLAYER2);
 //       qDebug() << "player1 left " << player1CellNumber;
@@ -153,11 +162,6 @@ namespace game {
       } else {
         return NONE;
       }
-      return res;
-  }
-
-  bool Board::terminateTest() const {
-      return utility() != NONE;
   }
 
 }

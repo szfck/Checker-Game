@@ -3,11 +3,10 @@
 #include <set>
 #include <QMessageBox>
 
-
 cellui::cellui(QWidget* parent) : QLabel(parent) {
     count = 0;
     this->cell = cell;
-    displayBackground();
+//    displayBackground();
     if (cell.status == PLAYER1) {
         setOne();
     } else if (cell.status == PLAYER2) {
@@ -63,7 +62,6 @@ void cellui::displayBackground() {
     }
 }
 
-
 boardui::boardui(QWidget* parent) : QWidget(parent) {
     for (int i = 1; i <= 6; i++) {
         for (int j = 1; j <= 6; j++) {
@@ -73,7 +71,6 @@ boardui::boardui(QWidget* parent) : QWidget(parent) {
             cells[i][j]->setGeometry(y, x, 85, 85);
         }
     }
-//    display();
 }
 
 boardui::~boardui() {
@@ -127,7 +124,6 @@ void boardui::display() {
 
 }
 
-
 MyObject::MyObject() {
 
 }
@@ -136,35 +132,38 @@ MyObject::~MyObject() {
 
 }
 
-void MyObject::first() {
+void MyObject::compute() {
     std::pair<game::Cell, game::Cell> next = myGame.player2->play(myGame.board);
     myGame.board.take(next.first, next.second);
 
-    emit getresult();
+    emit computeFinish();
 }
 
 void boardui::aiplay() {
     qDebug("ai is playing!");
 
-    MyObject* my = new MyObject();
+    MyObject* aicompute = new MyObject();
     QThread *thread = new QThread;
-    my->moveToThread(thread);
+
+    // Since long time computation will block gui program
+    // to refresh the board ui. Therefore,
+    // put the AI play computation to a new thread
+    // to avoid blocking the gui refresh
+    aicompute->moveToThread(thread);
 
     thread->start();
-    connect(thread, SIGNAL(started()), my, SLOT(first()));
-    connect(my, SIGNAL(getresult()), this, SLOT(displayslot()));
-
+    connect(thread, SIGNAL(started()), aicompute, SLOT(compute()));
+    connect(aicompute, SIGNAL(computeFinish()), this, SLOT(displayslot()));
 }
 
 void boardui::displayslot() {
     this->display();
-    int result = myGame.isFinished();
+    int result = myGame.gameStatus();
     if (result != NONE) {
         showResult(result);
     }
     myGame.getNextPlayer();
 }
-
 
 void boardui::click(cellui *current) {
     qDebug("click (%d,%d)\n", current->cell.x, current->cell.y);
@@ -208,7 +207,7 @@ void boardui::click(cellui *current) {
 
             myGame.getNextPlayer();
 
-            int result = myGame.isFinished();
+            int result = myGame.gameStatus();
             if (result != NONE) {
                 showResult(result);
                 return;
@@ -224,7 +223,7 @@ void boardui::click(cellui *current) {
         }
 
     } else {
-        qDebug("!!!this is a press but!!!");
+        qDebug("!!!this is a press bug!!!");
     }
 }
 

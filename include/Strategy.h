@@ -59,7 +59,7 @@ namespace game {
       double error_rate;
 
       /** 
-       * AI paly strategy method
+       * AI play strategy method
        * 
        * @param board The given Board instance
        * @param type The user type

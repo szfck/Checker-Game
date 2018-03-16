@@ -61,7 +61,7 @@ namespace game {
        * 
        * @return Game status FIRSTWIN/SECONDWIN/DRAW/NONE
       */
-      int isFinished();
+      int gameStatus();
 
       /**
        * Show the game result

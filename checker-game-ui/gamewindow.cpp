@@ -3,7 +3,6 @@
 #include <QKeyEvent>
 #include <QHBoxLayout>
 
-
 gamewindow::gamewindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::gamewindow)
@@ -17,10 +16,9 @@ gamewindow::gamewindow(QWidget *parent) :
     replay();
 }
 
-void gamewindow::handleButton() {
+void gamewindow::handleReplayButton() {
     replay();
 }
-
 
 void gamewindow::replay() {
     int diff = ui->difficultyComboBox->currentIndex() + 1;

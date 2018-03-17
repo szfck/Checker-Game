@@ -1,4 +1,5 @@
 #include "Strategy.h"
+#include <QDebug>
 #include <set>
 
 namespace game {
@@ -61,7 +62,7 @@ namespace game {
 
   std::pair<Cell, Cell> AIStrategy::alpha_beta_search(const Board &board, int currentPlayer) {
 
-      count = 100000;
+//      count = 100000;
 
       auto res = max_value(board, currentPlayer, -1, 1, 0).second;
 
@@ -70,13 +71,16 @@ namespace game {
   }
 
   std::pair<int, std::pair<Cell, Cell>> AIStrategy::max_value(const Board& board, int currentPlayer, int alpha, int beta, int level) {
-      count--;
+//      count--;
+//      if (count <= 0) return {-1, {}};
 
-      if (count <= 0) return {-1, {}};
+//       printf("max function at %d!\n", level);
 
-      // printf("max function at %d!\n", level);
-
-      if (board.isTerminate()) return {board.utility(PLAYER2), {}};
+      if (board.isTerminate() || level >= maxLevel) {
+//          qDebug() << "terminate!";
+//          qDebug() << "terminate at " << level ;
+          return {board.utility(PLAYER2), {}};
+      }
       int value = -1;
       Cell maxstart, maxdest;
       for (auto next : actions(board, currentPlayer)) {
@@ -90,6 +94,7 @@ namespace game {
               maxdest = dest;
           }
           if (value >= beta) {
+//              qDebug() << "prune !!";
               return {value, {maxstart, maxdest}};
           }
 
@@ -100,13 +105,15 @@ namespace game {
   }
 
   std::pair<int, std::pair<Cell, Cell>> AIStrategy::min_value(const Board& board, int currentPlayer, int alpha, int beta, int level) {
-      count--;
-
-      if (count <= 0) return {-1, {}};
+//      count--;
+//      if (count <= 0) return {-1, {}};
 
       // printf("min function at %d!\n", level);
 
-      if (board.isTerminate()) return {board.utility(PLAYER2), {}};
+      if (board.isTerminate() || level >= maxLevel) {
+//          qDebug() << "terminate at " << level ;
+          return {board.utility(PLAYER2), {}};
+      }
       int value = 1;
       Cell minstart, mindest;
       for (auto next : actions(board, currentPlayer)) {
@@ -120,6 +127,7 @@ namespace game {
               mindest = dest;
           }
           if (value <= alpha) {
+//              qDebug() << "prune !!";
               return {value, {minstart, mindest}};
           }
 

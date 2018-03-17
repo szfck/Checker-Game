@@ -55,12 +55,12 @@ namespace game {
 
   void Game::setDifficulty(int difficulty) {
     this->difficulty = difficulty;
-    if (difficulty == 1) { // easy, 67% error rate
-      static_cast<AIStrategy*>(player2->strategy)->error_rate = 0.67;
-    } else if (difficulty == 2) { // medium, 33% error rate
-      static_cast<AIStrategy*>(player2->strategy)->error_rate = 0.33;
-    } else { // hard, no error
-      static_cast<AIStrategy*>(player2->strategy)->error_rate = 0.0;
+    if (difficulty == 1) { // easy
+      static_cast<AIStrategy*>(player2->strategy)->maxLevel = 5;
+    } else if (difficulty == 2) { // medium
+      static_cast<AIStrategy*>(player2->strategy)->maxLevel = 10;
+    } else { // hard
+      static_cast<AIStrategy*>(player2->strategy)->maxLevel = 15;
     }
   }
 

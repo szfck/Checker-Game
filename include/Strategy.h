@@ -55,8 +55,9 @@ namespace game {
     public:
 
       // control alpha beta min max alg difficulty
-      // the higher the error_rate is, eaiser the game is
-      double error_rate;
+      // define search max level, if search reach maxlevel, heuristic function will be used
+      // the higher the maxLevel is, harder the game is
+      int maxLevel;
 
       /** 
        * AI play strategy method

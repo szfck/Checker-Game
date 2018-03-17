@@ -71,6 +71,8 @@ boardui::boardui(QWidget* parent) : QWidget(parent) {
             cells[i][j]->setGeometry(y, x, 85, 85);
         }
     }
+
+
 }
 
 boardui::~boardui() {
@@ -134,6 +136,7 @@ MyObject::~MyObject() {
 
 void MyObject::compute() {
     std::pair<game::Cell, game::Cell> next = myGame.player2->play(myGame.board);
+
     myGame.board.take(next.first, next.second);
 
     emit computeFinish();
@@ -142,27 +145,45 @@ void MyObject::compute() {
 void boardui::aiplay() {
     qDebug("ai is playing!");
 
-    MyObject* aicompute = new MyObject();
-    QThread *thread = new QThread;
+
+//    QThread *thread = new QThread;
 
     // Since long time computation will block gui program
     // to refresh the board ui. Therefore,
     // put the AI play computation to a new thread
     // to avoid blocking the gui refresh
-    aicompute->moveToThread(thread);
 
+
+//    thread->start();
+
+
+//    emit aicompute->startcompute();
+    // AI thread Object
+    ;
+
+    MyObject* aicompute = new MyObject();
+    QThread *thread = new QThread;
     thread->start();
+    aicompute->moveToThread(thread);
     connect(thread, SIGNAL(started()), aicompute, SLOT(compute()));
     connect(aicompute, SIGNAL(computeFinish()), this, SLOT(displayslot()));
+//    aicompute->compute();
 }
 
 void boardui::displayslot() {
     this->display();
     int result = myGame.gameStatus();
     if (result != NONE) {
+        qDebug() << "result" << result;
         showResult(result);
+        return;
     }
     myGame.getNextPlayer();
+
+    if (myGame.getCurrentPlayer()->type == PLAYER2) {
+        qDebug() << "again !!!";
+        aiplay();
+    }
 }
 
 void boardui::click(cellui *current) {

@@ -27,6 +27,22 @@ public:
     ~cellui();
 };
 
+class MyObject : public QObject {
+    Q_OBJECT
+
+    public:
+        MyObject();
+
+        ~MyObject();
+
+    public slots:
+        void compute();
+
+    signals:
+        void computeFinish();
+};
+
+
 class boardui : public QWidget {
     Q_OBJECT
 private:
@@ -36,6 +52,7 @@ public:
     boardui(QWidget* parent = 0);
     ~boardui();
     cellui* cells[7][7] = { { nullptr } };
+
 
     void display();
 
@@ -52,19 +69,5 @@ public slots:
 
 };
 
-class MyObject : public QObject {
-    Q_OBJECT
-
-    public:
-        MyObject();
-
-        ~MyObject();
-
-    public slots:
-        void compute();
-
-    signals:
-        void computeFinish();
-};
 
 #endif // BOARDUI_H

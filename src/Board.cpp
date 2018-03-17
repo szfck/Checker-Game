@@ -135,7 +135,23 @@ namespace game {
 
   // TODO
   int Board::utility(int type) const {
-    return 1;
+//    return 1;
+      int result = boardStatus();
+      if (result == DRAW) return 0;
+      else if (result == SECONDWIN) return 1;
+      else if (result == FIRSTWIN) return -1;
+      else {
+//          qDebug() << "buggggggg!!!!";
+          int player1Remain = cellRemain(PLAYER1);
+          int player2Remain = cellRemain(PLAYER2);
+
+          if (player1Remain != player2Remain) {
+              return player2Remain > player1Remain ? SECONDWIN : FIRSTWIN;
+          } else {
+              return DRAW;
+          }
+      }
+
   }
 
 

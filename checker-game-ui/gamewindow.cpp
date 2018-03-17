@@ -2,6 +2,7 @@
 #include "ui_gamewindow.h"
 #include <QKeyEvent>
 #include <QHBoxLayout>
+#include <QDebug>
 
 gamewindow::gamewindow(QWidget *parent) :
     QMainWindow(parent),
@@ -11,7 +12,7 @@ gamewindow::gamewindow(QWidget *parent) :
     addboard();
 
     // Connect button signal to appropriate slot
-    connect(ui->replayPushButton, SIGNAL (released()), this, SLOT (handleButton()));
+    connect(ui->replayPushButton, SIGNAL (released()), this, SLOT (handleReplayButton()));
 
     replay();
 }

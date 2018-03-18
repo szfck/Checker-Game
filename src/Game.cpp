@@ -56,11 +56,11 @@ namespace game {
   void Game::setDifficulty(int difficulty) {
     this->difficulty = difficulty;
     if (difficulty == 1) { // easy
-      static_cast<AIStrategy*>(player2->strategy)->maxLevel = 5;
+      static_cast<AIStrategy*>(player2->strategy)->maxLevel = 3;
     } else if (difficulty == 2) { // medium
-      static_cast<AIStrategy*>(player2->strategy)->maxLevel = 10;
+      static_cast<AIStrategy*>(player2->strategy)->maxLevel = 6;
     } else { // hard
-      static_cast<AIStrategy*>(player2->strategy)->maxLevel = 15;
+      static_cast<AIStrategy*>(player2->strategy)->maxLevel = 9;
     }
   }
 

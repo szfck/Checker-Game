@@ -83,6 +83,10 @@ namespace game {
        * @return how many player of type remain on the board
        */
       int cellRemain(int type) const;
+
+      int evaluate(int type) const;
+
+      std::pair<long long, long long> toNum() const;
   };
   
 }

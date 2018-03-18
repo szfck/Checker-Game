@@ -17,6 +17,11 @@ namespace game {
   #define SECONDWIN 4
   #define DRAW 5
   #define NONE 6
+
+  /**
+    * min max alg infinity
+   */
+  #define Inf 200
   
 }
 

@@ -1,6 +1,7 @@
 #include "Strategy.h"
 #include <QDebug>
 #include <set>
+#include <cassert>
 
 namespace game {
 
@@ -50,10 +51,6 @@ namespace game {
   std::pair<Cell, Cell> AIStrategy::play(const Board& board, int type) {
     // TODO using error_rate to implement alpha beta alg 
     // printf("AI playing...\n\n");
-//    auto mock = new PlayerStrategy;
-//      return std::make_pair(board.get(5, 1), board.get(4, 2));
-//    return mock->play(board, type);
-//       const int WIN = 1, LOSE = -1, DRAW = 0;
     printf("start using min max alg\n");
 
     return alpha_beta_search(board, type);
@@ -61,40 +58,45 @@ namespace game {
   }
 
   std::pair<Cell, Cell> AIStrategy::alpha_beta_search(const Board &board, int currentPlayer) {
-
-//      count = 100000;
-
-      auto res = max_value(board, currentPlayer, -1, 1, 0).second;
-
-      printf("find next from (%d,%d), to (%d, %d)\n", res.first.x, res.first.y, res.second.x, res.second.y);
+      assert(currentPlayer == PLAYER2);
+      auto ans = max_value(board, currentPlayer, -Inf, Inf, 0);
+      auto res = ans.second;
+      qDebug("find next value is %d\n", ans.first);
+      qDebug("find next from (%d,%d), to (%d, %d)\n", res.first.x, res.first.y, res.second.x, res.second.y);
       return res;
   }
 
-  std::pair<int, std::pair<Cell, Cell>> AIStrategy::max_value(const Board& board, int currentPlayer, int alpha, int beta, int level) {
-//      count--;
-//      if (count <= 0) return {-1, {}};
-
-//       printf("max function at %d!\n", level);
-
-      if (board.isTerminate() || level >= maxLevel) {
-//          qDebug() << "terminate!";
-//          qDebug() << "terminate at " << level ;
-          return {board.utility(PLAYER2), {}};
+  void show(const Board& board) {
+      for (int i = board.row; i >= 1; i--) {
+          std::string str = "";
+          for (int j = 1; j <= board.col; j++) {
+              if (board.get(i, j).status == PLAYER1) str += '1';
+              else if (board.get(i, j).status == PLAYER2) str += '2';
+              else str += '_';
+          }
+          qDebug() << QString(str.c_str());
       }
-      int value = -1;
+      qDebug() << board.utility(1);
+  }
+  std::pair<int, std::pair<Cell, Cell>> AIStrategy::max_value(const Board& board, int currentPlayer, int alpha, int beta, int level) {
+      if (board.isTerminate() || level >= maxLevel) {
+          return {board.utility(currentPlayer), {}};
+      }
+      int value = -Inf;
       Cell maxstart, maxdest;
       for (auto next : actions(board, currentPlayer)) {
           Board tmpboard = board;
           Cell start = next.first, dest = next.second;
           tmpboard.take(start, dest);
           auto result = min_value(tmpboard, currentPlayer ^ 1, alpha, beta, level + 1);
+
           if (result.first >= value) {
               value = result.first;
               maxstart = start;
               maxdest = dest;
           }
+          assert(value >= -Inf && value <= Inf);
           if (value >= beta) {
-//              qDebug() << "prune !!";
               return {value, {maxstart, maxdest}};
           }
 
@@ -105,16 +107,10 @@ namespace game {
   }
 
   std::pair<int, std::pair<Cell, Cell>> AIStrategy::min_value(const Board& board, int currentPlayer, int alpha, int beta, int level) {
-//      count--;
-//      if (count <= 0) return {-1, {}};
-
-      // printf("min function at %d!\n", level);
-
       if (board.isTerminate() || level >= maxLevel) {
-//          qDebug() << "terminate at " << level ;
-          return {board.utility(PLAYER2), {}};
+          return {board.utility(currentPlayer), {}};
       }
-      int value = 1;
+      int value = Inf;
       Cell minstart, mindest;
       for (auto next : actions(board, currentPlayer)) {
           Board tmpboard = board;
@@ -126,8 +122,8 @@ namespace game {
               minstart = start;
               mindest = dest;
           }
+          assert(value >= -Inf && value <= Inf);
           if (value <= alpha) {
-//              qDebug() << "prune !!";
               return {value, {minstart, mindest}};
           }
 

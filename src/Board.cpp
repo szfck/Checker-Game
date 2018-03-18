@@ -48,8 +48,6 @@ namespace game {
   }
 
   bool Board::isValidType(int x, int y, int type) const {
-    // printf("row :%d, col:%d\n", row, col);
-    // printf("get status : %d\n", get(x,y).status);
     return x >= 1 && x <= row && y >= 1 && y <= col && get(x, y).status == type;
   }
 
@@ -133,23 +131,49 @@ namespace game {
       return false;
   }
 
-  // TODO
+  int Board::evaluate(int type) const {
+      int stable = 0;
+      int nxt = 0;
+      int v1 = cellRemain(PLAYER2) - cellRemain(PLAYER1);
+      int w1 = 10;
+      int v2 = 0, w2 = 3;
+      int v3 = 0, w3 = 2;
+
+      for (int i = 1; i <= row; i++) {
+          for (int j = 1; j <= col; j++) {
+              if (get(i, j).status == PLAYER1) {
+                  if (j == 1 || j == col) v2++;
+              } else if (get(i, j).status == PLAYER2) {
+                  if (j == 1 || j == col) v2--;
+              }
+          }
+      }
+
+      return v1 * w1 + v2 * w2;
+  }
+
+  std::pair<long long, long long> Board::toNum() const {
+      long long res1 = 0, res2 = 0;
+      int bit = 0;
+      for (int i = 1, k = 1; i <= row; i++, k = 3 - k) {
+          for (int j = k; j <= col; j += 2, bit++) {
+              if (get(i, j).status == PLAYER1) {
+                  res1 += (1ll << bit);
+              } else if (get(i, j).status == PLAYER2) {
+                  res2 += (1ll << bit);
+              }
+          }
+      }
+      return {res1, res2};
+  }
+
   int Board::utility(int type) const {
-//    return 1;
       int result = boardStatus();
       if (result == DRAW) return 0;
-      else if (result == SECONDWIN) return 1;
-      else if (result == FIRSTWIN) return -1;
+      else if (result == SECONDWIN) return Inf;
+      else if (result == FIRSTWIN) return -Inf;
       else {
-//          qDebug() << "buggggggg!!!!";
-          int player1Remain = cellRemain(PLAYER1);
-          int player2Remain = cellRemain(PLAYER2);
-
-          if (player1Remain != player2Remain) {
-              return player2Remain > player1Remain ? SECONDWIN : FIRSTWIN;
-          } else {
-              return DRAW;
-          }
+           return evaluate(PLAYER2);
       }
 
   }
@@ -162,12 +186,6 @@ namespace game {
   int Board::boardStatus() const {
       int player1CellNumber = cellRemain(PLAYER1);
       int player2CellNumber = cellRemain(PLAYER2);
-//       qDebug() << "player1 left " << player1CellNumber;
-//       qDebug() << "player2 left " << player2CellNumber;
-
-//       qDebug() << "player1 has next " << hasNextLegalStep(PLAYER1);
-//       qDebug() << "player2 has next " << hasNextLegalStep(PLAYER2);
-
 
       if (player1CellNumber == 0) return SECONDWIN;
       else if (player2CellNumber == 0) return FIRSTWIN;

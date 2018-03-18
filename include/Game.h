@@ -15,10 +15,6 @@ namespace game {
 
       Player* currentPlayer;
 
-//      bool hasNextLegalStep(Player* player);
-
-//      int cellRemain(Player* player);
-
     public:
 
       Board board;

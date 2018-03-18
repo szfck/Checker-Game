@@ -41,8 +41,6 @@ namespace game {
   // AI strategy
   class AIStrategy: public Strategy {
     private:
-    
-      int count = 0;
 
       std::pair<Cell, Cell> alpha_beta_search(const Board& board, int currentPlayer);
 

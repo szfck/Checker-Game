@@ -7,8 +7,10 @@
 #include <QThread>
 #include <QLabel>
 
+// global instance of Game
 extern game::Game myGame;
 
+// Cell UI
 class cellui : public QLabel {
 public:
     int count;
@@ -27,6 +29,11 @@ public:
     ~cellui();
 };
 
+/**
+ * AI Algorithm Compute Object in another thread
+ * to avoid UI refresh bock
+ * Since this algorithm may take a lot of CPU resources
+ */  
 class MyObject : public QObject {
     Q_OBJECT
 
@@ -42,7 +49,7 @@ class MyObject : public QObject {
         void computeFinish();
 };
 
-
+// Board UI
 class boardui : public QWidget {
     Q_OBJECT
 private:
@@ -68,6 +75,5 @@ public slots:
     void displayslot();
 
 };
-
 
 #endif // BOARDUI_H

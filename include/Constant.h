@@ -16,7 +16,7 @@ namespace game {
   #define FIRSTWIN 3
   #define SECONDWIN 4
   #define DRAW 5
-  #define NONE 6
+  #define NONE 6 // game not end
 
   /**
     * min max alg infinity

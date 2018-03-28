@@ -61,14 +61,15 @@ namespace game {
       /**
        * @brief utility
        * @return utility value, the higher the values is, the more possible will win
+       * if game is over, return WIN or DRAW, otherwise return evaluate value for cut off
        */
       int utility(int type) const;
 
       /**
-       * @brief boardStatus
+       * @brief gameStatus
        * @return game status FIRSTWIN/SECONDWIN/DRAW/NONE
        */
-      int boardStatus() const;
+      int gameStatus() const;
 
       /**
        * @brief hasNextLegalStep
@@ -84,9 +85,14 @@ namespace game {
        */
       int cellRemain(int type) const;
 
+      /**
+       * @brief evaluate
+       * @param type of player
+       * @return evaluation value when alpha-beta algorithm need
+       * to be cut off reaching the limi depth
+       */
       int evaluate(int type) const;
 
-      std::pair<long long, long long> toNum() const;
   };
   
 }

@@ -2,7 +2,6 @@
 #include "Constant.h"
 #include <cassert>
 #include <iostream>
-#include <QDebug>
 
 namespace game {
 
@@ -24,7 +23,7 @@ namespace game {
       }
     }
     
-    //TODO set init player1 and player2
+    //init player1 and player2
     for (int j = 1; j <= 5; j += 2) {
       set(1, j, Cell(1, j, PLAYER1));
       set(5, j, Cell(5, j, PLAYER2));
@@ -68,17 +67,26 @@ namespace game {
     
     std::vector<Cell> legalCells;
 
-    // no jump
-    for (int i = 0; i < 2; i++) {
-      int dx = dir[cell.status][0][i] + cell.x;
-      int dy = dir[cell.status][1][i] + cell.y;
+    // check if player has any legal capture move
+    bool hasCaptureMove = false;
+    for (int i = 1; i <= row && !hasCaptureMove; i++) {
+        for (int j = 1; j <= col && !hasCaptureMove; j++) {
+            if (get(i, j).status != cell.status) continue;
+            for (int k = 0; k < 2; k++) {
+                int mx = dir[cell.status][0][k] + i;
+                int my = dir[cell.status][1][k] + j;
 
-      if (isValidType(dx, dy, EMPTY)) {
-        legalCells.push_back(get(dx, dy));
-      }
+                int dx = dir[cell.status][0][k] + mx;
+                int dy = dir[cell.status][1][k] + my;
+
+                if (isValidType(dx, dy, EMPTY) && isValidType(mx, my, cell.status ^ 1)) {
+                    hasCaptureMove = true;
+                }
+            }
+        }
     }
 
-    // jump over
+    // jump over, capture move
     for (int i = 0; i < 2; i++) {
       int mx = dir[cell.status][0][i] + cell.x;
       int my = dir[cell.status][1][i] + cell.y;
@@ -92,17 +100,32 @@ namespace game {
       }
     }
 
+    // if has capture move, then not consider regular move
+    if (hasCaptureMove) return legalCells;
+
+    // no jump, regular move
+    for (int i = 0; i < 2; i++) {
+      int dx = dir[cell.status][0][i] + cell.x;
+      int dy = dir[cell.status][1][i] + cell.y;
+
+      if (isValidType(dx, dy, EMPTY)) {
+        legalCells.push_back(get(dx, dy));
+      }
+    }
+
     return legalCells;
 
   }
   
 
   void Board::take(Cell start, Cell dest) {
+    // jumpr over a cell
     if (abs(start.x - dest.x) != 1) {
       int x = (start.x + dest.x) / 2;
       int y = (start.y + dest.y) / 2;
       set(x, y, Cell(x, y, EMPTY));
     }
+
     set(start.x, start.y, Cell(start.x, start.y, EMPTY));
     set(dest.x, dest.y, Cell(dest.x, dest.y, start.status)); 
   }
@@ -134,10 +157,19 @@ namespace game {
   int Board::evaluate(int type) const {
       int stable = 0;
       int nxt = 0;
+
+      // first, consdier how many left
       int v1 = cellRemain(PLAYER2) - cellRemain(PLAYER1);
+
+      // weight1 is 10
       int w1 = 10;
-      int v2 = 0, w2 = 3;
-      int v3 = 0, w3 = 2;
+
+      // second, consider the position at leftmost or rightmose
+      // since these cells can not be eaten
+      int v2 = 0;
+
+      // weight2 is 3
+      int w2 = 3;
 
       for (int i = 1; i <= row; i++) {
           for (int j = 1; j <= col; j++) {
@@ -149,41 +181,26 @@ namespace game {
           }
       }
 
+      // a weighted function for evaluation
       return v1 * w1 + v2 * w2;
   }
 
-  std::pair<long long, long long> Board::toNum() const {
-      long long res1 = 0, res2 = 0;
-      int bit = 0;
-      for (int i = 1, k = 1; i <= row; i++, k = 3 - k) {
-          for (int j = k; j <= col; j += 2, bit++) {
-              if (get(i, j).status == PLAYER1) {
-                  res1 += (1ll << bit);
-              } else if (get(i, j).status == PLAYER2) {
-                  res2 += (1ll << bit);
-              }
-          }
-      }
-      return {res1, res2};
-  }
-
   int Board::utility(int type) const {
-      int result = boardStatus();
+      int result = gameStatus();
       if (result == DRAW) return 0;
       else if (result == SECONDWIN) return Inf;
       else if (result == FIRSTWIN) return -Inf;
       else {
-           return evaluate(PLAYER2);
+        return evaluate(PLAYER2);
       }
 
   }
 
-
   bool Board::isTerminate() const {
-      return boardStatus() != NONE;
+      return gameStatus() != NONE;
   }
 
-  int Board::boardStatus() const {
+  int Board::gameStatus() const {
       int player1CellNumber = cellRemain(PLAYER1);
       int player2CellNumber = cellRemain(PLAYER2);
 

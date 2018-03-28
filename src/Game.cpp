@@ -3,7 +3,6 @@
 #include "Board.h"
 #include <iostream>
 #include <time.h>
-#include <QDebug>
 
 namespace game {
 
@@ -90,7 +89,7 @@ namespace game {
 
   }
 
-  // TODO change to UI part
+  // For the command line part (UI use another part)
   void Game::showResult(int result) {
     if (result == FIRSTWIN) {
       printf("%s wins\n", player1->name.c_str());
@@ -104,10 +103,10 @@ namespace game {
   }
 
   int Game::gameStatus() {
-      return board.boardStatus();
+      return board.gameStatus();
   }
 
-  // TODO change to UI show
+  // For the command line part (UI use another part)
   void Game::showBoard() {
     for (int i = board.row; i >= 1; i--) {
       std::string line = "";

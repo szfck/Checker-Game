@@ -6,7 +6,6 @@
 cellui::cellui(QWidget* parent) : QLabel(parent) {
     count = 0;
     this->cell = cell;
-//    displayBackground();
     if (cell.status == PLAYER1) {
         setOne();
     } else if (cell.status == PLAYER2) {
@@ -71,8 +70,6 @@ boardui::boardui(QWidget* parent) : QWidget(parent) {
             cells[i][j]->setGeometry(y, x, 85, 85);
         }
     }
-
-
 }
 
 boardui::~boardui() {
@@ -83,6 +80,7 @@ void boardui::newgame() {
     myGame.board.init(6, 6);
     display();
 
+    // If AI play first
     if (myGame.getCurrentPlayer()->type == PLAYER2) {
         aiplay();
     }
@@ -123,7 +121,6 @@ void boardui::display() {
             cells[i][j]->display();
         }
     }
-
 }
 
 MyObject::MyObject() {
@@ -134,6 +131,7 @@ MyObject::~MyObject() {
 
 }
 
+// Compute AI's next step
 void MyObject::compute() {
     std::pair<game::Cell, game::Cell> next = myGame.player2->play(myGame.board);
 
@@ -143,54 +141,35 @@ void MyObject::compute() {
 }
 
 void boardui::aiplay() {
-    qDebug("ai is playing!");
-
-
-//    QThread *thread = new QThread;
-
-    // Since long time computation will block gui program
-    // to refresh the board ui. Therefore,
-    // put the AI play computation to a new thread
-    // to avoid blocking the gui refresh
-
-
-//    thread->start();
-
-
-//    emit aicompute->startcompute();
-    // AI thread Object
-    ;
-
     MyObject* aicompute = new MyObject();
+    // creat a new thread for computing
     QThread *thread = new QThread;
     thread->start();
     aicompute->moveToThread(thread);
+    // trigger compute function when new thread is started
     connect(thread, SIGNAL(started()), aicompute, SLOT(compute()));
+    // trigger update UI when compute finished
     connect(aicompute, SIGNAL(computeFinish()), this, SLOT(displayslot()));
-//    aicompute->compute();
 }
 
 void boardui::displayslot() {
     this->display();
     int result = myGame.gameStatus();
     if (result != NONE) {
-        qDebug() << "result" << result;
         showResult(result);
         return;
     }
+
     myGame.getNextPlayer();
 
     if (myGame.getCurrentPlayer()->type == PLAYER2) {
-        qDebug() << "again !!!";
         aiplay();
     }
 }
 
 void boardui::click(cellui *current) {
-    qDebug("click (%d,%d)\n", current->cell.x, current->cell.y);
-
+    // qDebug("click (%d,%d)\n", current->cell.x, current->cell.y);
     game::Cell cell = current->cell;
-    qDebug() << "current player" << myGame.getCurrentPlayer()->type;
 
     // not human turn
     if (myGame.getCurrentPlayer()->type != PLAYER1) return;
@@ -206,8 +185,8 @@ void boardui::click(cellui *current) {
         }
         previous = cell;
     } else if (pressCount == 1) {
-        if (cell.x == previous.x && cell.y == previous.y) { // press same cell twice
-            pressCount = 0;
+        // press same cell twice
+        if (cell.x == previous.x && cell.y == previous.y) {             pressCount = 0;
             display();
             return;
         }
@@ -220,12 +199,14 @@ void boardui::click(cellui *current) {
 
         auto list = myGame.board.getNextLegalCells(previous);
         std::set<game::Cell> vis(list.begin(), list.end());
-        if (vis.find(cell) != vis.end()) { // find next step to take
+
+        // find next step to take
+        if (vis.find(cell) != vis.end()) {             
             pressCount = 0;
             myGame.board.take(previous, cell);
             display();
-            qDebug("displaying!!!!!");
 
+            // next player
             myGame.getNextPlayer();
 
             int result = myGame.gameStatus();
@@ -234,12 +215,9 @@ void boardui::click(cellui *current) {
                 return;
             }
 
-            qDebug() << "result" << result;
-
+            // next player is AI
             if (myGame.getCurrentPlayer()->type == PLAYER2) {
-
                 aiplay();
-
             }
         }
 
@@ -248,6 +226,7 @@ void boardui::click(cellui *current) {
     }
 }
 
+// show result
 void boardui::showResult(int result) {
     if (result != NONE) {
         QString str = "";

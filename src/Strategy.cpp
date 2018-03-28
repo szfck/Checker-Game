@@ -1,11 +1,10 @@
 #include "Strategy.h"
-#include <QDebug>
 #include <set>
 #include <cassert>
 
 namespace game {
 
-  // TODO receive UI click
+  // For the command line interaction
   std::pair<Cell, Cell> PlayerStrategy::play(const Board& board, int type) {
     printf("human playing...\n\n");
 
@@ -14,9 +13,6 @@ namespace game {
       printf("please input the start (x, y)coordinate to take...\n\n");
 
       scanf("%d%d", &sx, &sy);
-      // printf("sx :%d, sy:%d\n", sx, sy);
-      // printf("type: %d\n", type);
-      // printf("isvalid : %d\n", board.isValidType(sx, sy, type));
       if (board.isValidType(sx, sy, type) && !board.getNextLegalCells(board.get(sx, sy)).empty()) {
         printf("Select start (%d, %d)\n\n", sx, sy);
         break;
@@ -49,9 +45,6 @@ namespace game {
   }
 
   std::pair<Cell, Cell> AIStrategy::play(const Board& board, int type) {
-    // TODO using error_rate to implement alpha beta alg 
-    // printf("AI playing...\n\n");
-    printf("start using min max alg\n");
 
     return alpha_beta_search(board, type);
 
@@ -61,23 +54,22 @@ namespace game {
       assert(currentPlayer == PLAYER2);
       auto ans = max_value(board, currentPlayer, -Inf, Inf, 0);
       auto res = ans.second;
-      qDebug("find next value is %d\n", ans.first);
-      qDebug("find next from (%d,%d), to (%d, %d)\n", res.first.x, res.first.y, res.second.x, res.second.y);
       return res;
   }
 
-  void show(const Board& board) {
-      for (int i = board.row; i >= 1; i--) {
-          std::string str = "";
-          for (int j = 1; j <= board.col; j++) {
-              if (board.get(i, j).status == PLAYER1) str += '1';
-              else if (board.get(i, j).status == PLAYER2) str += '2';
-              else str += '_';
-          }
-          qDebug() << QString(str.c_str());
-      }
-      qDebug() << board.utility(1);
-  }
+//  void show(const Board& board) {
+//      for (int i = board.row; i >= 1; i--) {
+//          std::string str = "";
+//          for (int j = 1; j <= board.col; j++) {
+//              if (board.get(i, j).status == PLAYER1) str += '1';
+//              else if (board.get(i, j).status == PLAYER2) str += '2';
+//              else str += '_';
+//          }
+//          qDebug() << QString(str.c_str());
+//      }
+//      qDebug() << board.utility(1);
+//  }
+
   std::pair<int, std::pair<Cell, Cell>> AIStrategy::max_value(const Board& board, int currentPlayer, int alpha, int beta, int level) {
       if (board.isTerminate() || level >= maxLevel) {
           return {board.utility(currentPlayer), {}};

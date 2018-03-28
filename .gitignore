@@ -1,3 +1,6 @@
 asset
 release
 .vscode
+build-checker-game*
+.DS_Store
+checker-game-ui.pro.user

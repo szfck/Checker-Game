@@ -15,24 +15,22 @@ namespace game {
 
       Player* currentPlayer;
 
-      Player* getNextPlayer();
-
-      bool hasNextLegalStep(Player* player);
-
-      int cellRemain(Player* player);
-      
-      Board board;
-
     public:
 
-      // Game difficulty from 1(easy) to 3(hard)
-      int difficulty; 
+      Board board;
+
+      // Game difficulty from 1(easy) to 3(hard) int difficulty; 
+      int difficulty;
 
       // First player to play
       Player* player1; 
 
       // Second player to play
       Player* player2; 
+
+      Player* getNextPlayer();
+
+      Player* getCurrentPlayer();
 
       /**
        * Construct
@@ -59,7 +57,7 @@ namespace game {
        * 
        * @return Game status FIRSTWIN/SECONDWIN/DRAW/NONE
       */
-      int isFinished();
+      int gameStatus();
 
       /**
        * Show the game result
@@ -71,6 +69,11 @@ namespace game {
        * Main function to run the game
       */
       void run();
+
+      /**
+       * Show the board in command line
+      */
+      void showBoard();
 
   };
   

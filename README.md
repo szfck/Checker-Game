@@ -31,9 +31,8 @@ qmake ..
 
 make
 
-# For Mac, use this command, if you use windows or linux, please 
-# go to corresponding folder to run app. since QT is a cross 
-# platform library, different OS will generate different code
+#### For Mac, use this command, if you use windows or linux, please go to corresponding folder to run app. since QT is a cross platform library, different OS will generate different codo
+
 ./checker-game-ui.app/Contents/MacOs/checker-game-ui
 
 

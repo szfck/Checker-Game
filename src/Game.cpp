@@ -65,25 +65,65 @@ namespace game {
 
   void Game::run() {
 
-    int result;
+    while (true) {
+      printf("please input the difficulty from 1(easy) to 3(hard)\n\n");
+      int diff = -1;
+      scanf("%d", &diff);
+      if (diff >= 1 && diff <= 3) {
+        setDifficulty(diff);
+        break;
+      }
+    }
+
+    while (true) {
+      printf("please input first or second you want to play\n first is 0, second is 1\n\n");
+      int first;
+      scanf("%d", &first);
+      if (first == 0) {
+        setHumanFirst(true);
+        break;
+      } else if (first == 1) {
+        setHumanFirst(false);
+        break;
+      }
+    }
+
+    printf("game start!\n\n");
+    showBoard();
 
     while (!board.isTerminate()) {
-
-      showBoard();
-
       Player* tmp = getCurrentPlayer();
 
-      printf("player: %d\n", tmp->type);
+      if (getCurrentPlayer()->type == PLAYER1) {
+        printf("It's your turn, you can start from \n");
+        for (int i = 1; i <= board.row; i++) {
+          for (int j = 1; j <= board.col; j++) {
+            if (board.get(i, j).status != PLAYER1) continue;
+            if (!board.getNextLegalCells(board.get(i, j)).empty()) {
+              printf("(%d, %d) ", i, j);
+            }
+          }
+        }
+        printf("\n\n");
+      }
 
       std::pair<Cell, Cell> cells = tmp->play(board);
 
       board.take(cells.first, cells.second);
 
+      if (getCurrentPlayer()->type == PLAYER2) {
+        printf("AI playing...\n");
+      } else {
+        printf("Human playing...\n");
+      }
+
+      showBoard();
+
       getNextPlayer();
 
     }
 
-    showResult(result);
+    showResult(board.gameStatus());
 
     showBoard();
 

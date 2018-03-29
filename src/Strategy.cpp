@@ -6,7 +6,7 @@ namespace game {
 
   // For the command line interaction
   std::pair<Cell, Cell> PlayerStrategy::play(const Board& board, int type) {
-    printf("human playing...\n\n");
+    // printf("human playing...\n\n");
 
     int sx, sy, dx, dy;
     while (true) {

@@ -3,23 +3,22 @@
 
 namespace game {
 
-  class Cell {
+class Cell {
 
-    public:
+  public:
+    int x, y;
 
-      int x, y;
+    int status;
 
-      int status;
+    Cell();
 
-      Cell();
+    ~Cell();
 
-       ~Cell();
+    Cell(int x, int y, int status);
 
-      Cell(int x, int y, int status);
+    bool operator<(const Cell &o) const;
+};
 
-      bool operator < (const Cell& o) const;
-  };
-  
-}
+} // namespace game
 
 #endif

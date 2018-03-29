@@ -1,20 +1,20 @@
 #ifndef BOARDUI_H
 #define BOARDUI_H
 
-#include "Game.h"
 #include "Cell.h"
+#include "Game.h"
+#include <QLabel>
 #include <QObject>
 #include <QThread>
-#include <QLabel>
 
 // global instance of Game
 extern game::Game myGame;
 
 // Cell UI
 class cellui : public QLabel {
-public:
+  public:
     int count;
-    cellui(QWidget* parent);
+    cellui(QWidget *parent);
     game::Cell cell;
 
     void display();
@@ -33,33 +33,33 @@ public:
  * AI Algorithm Compute Object in another thread
  * to avoid UI refresh bock
  * Since this algorithm may take a lot of CPU resources
- */  
+ */
 class MyObject : public QObject {
     Q_OBJECT
 
-    public:
-        MyObject();
+  public:
+    MyObject();
 
-        ~MyObject();
+    ~MyObject();
 
-    public slots:
-        void compute();
+  public slots:
+    void compute();
 
-    signals:
-        void computeFinish();
+  signals:
+    void computeFinish();
 };
 
 // Board UI
 class boardui : public QWidget {
     Q_OBJECT
-private:
+  private:
     int pressCount;
     game::Cell previous;
-public:
-    boardui(QWidget* parent = 0);
-    ~boardui();
-    cellui* cells[7][7] = { { nullptr } };
 
+  public:
+    boardui(QWidget *parent = 0);
+    ~boardui();
+    cellui *cells[7][7] = {{nullptr}};
 
     void display();
 
@@ -67,13 +67,12 @@ public:
 
     void newgame();
 
-    void click(cellui* current);
+    void click(cellui *current);
 
     void showResult(int result);
-public slots:
+  public slots:
 
     void displayslot();
-
 };
 
 #endif // BOARDUI_H

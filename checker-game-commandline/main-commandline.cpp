@@ -1,12 +1,12 @@
 #include "Game.h"
 
 int main() {
- game::Game game;
+    game::Game game;
 
- game.setDifficulty(1);
- game.setHumanFirst(true);
+    game.setDifficulty(1);
+    game.setHumanFirst(true);
 
- game.run();
+    game.run();
 
- return 0;
+    return 0;
 }

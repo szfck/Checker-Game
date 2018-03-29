@@ -7,26 +7,24 @@
 
 namespace game {
 
-  class Player {
-    public:
+class Player {
+  public:
+    std::string name;
 
-      std::string name;
+    int type;
 
-      int type;
+    Strategy *strategy; // Pointer to strategy
 
-      Strategy* strategy; // Pointer to strategy
+    Player(std::string name, int type, Strategy *strategy);
 
-      Player(std::string name, int type, Strategy* strategy);
+    /**
+     * @brief play
+     * @param board
+     * @return next pair of start and dest position of cell after playing
+     */
+    std::pair<Cell, Cell> play(const Board &board);
+};
 
-      /**
-       * @brief play
-       * @param board
-       * @return next pair of start and dest position of cell after playing
-       */
-      std::pair<Cell, Cell> play(const Board& board);
-
-  };
-  
-}
+} // namespace game
 
 #endif

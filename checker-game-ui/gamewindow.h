@@ -1,18 +1,17 @@
 #ifndef GAMEWINDOW_H
 #define GAMEWINDOW_H
 
-#include <QMainWindow>
 #include "boardui.h"
+#include <QMainWindow>
 
 namespace Ui {
 class gamewindow;
 }
 
-class gamewindow : public QMainWindow
-{
+class gamewindow : public QMainWindow {
     Q_OBJECT
 
-public:
+  public:
     explicit gamewindow(QWidget *parent = 0);
     ~gamewindow();
 
@@ -22,16 +21,16 @@ public:
     void addboard();
 
     /**
-     * @brief replay restart the game according to the difficulty and first or second to play in
-     * the settings
+     * @brief replay restart the game according to the difficulty and first or
+     * second to play in the settings
      */
     void replay();
 
-private:
+  private:
     Ui::gamewindow *ui;
-    boardui* board; // Board Widget
+    boardui *board; // Board Widget
 
-private slots:
+  private slots:
 
     /**
      * @brief handleReplayButton

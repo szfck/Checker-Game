@@ -1,25 +1,22 @@
 #include "gamewindow.h"
 #include "ui_gamewindow.h"
-#include <QKeyEvent>
-#include <QHBoxLayout>
 #include <QDebug>
+#include <QHBoxLayout>
+#include <QKeyEvent>
 
-gamewindow::gamewindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::gamewindow)
-{
+gamewindow::gamewindow(QWidget *parent)
+    : QMainWindow(parent), ui(new Ui::gamewindow) {
     ui->setupUi(this);
     addboard();
 
     // Connect button signal to appropriate slot
-    connect(ui->replayPushButton, SIGNAL (released()), this, SLOT (handleReplayButton()));
+    connect(ui->replayPushButton, SIGNAL(released()), this,
+            SLOT(handleReplayButton()));
 
     replay();
 }
 
-void gamewindow::handleReplayButton() {
-    replay();
-}
+void gamewindow::handleReplayButton() { replay(); }
 
 void gamewindow::replay() {
     int diff = ui->difficultyComboBox->currentIndex() + 1;
@@ -34,11 +31,6 @@ void gamewindow::replay() {
     board->newgame();
 }
 
-void gamewindow::addboard() {
-    board = new boardui(ui->boardWidget);
-}
+void gamewindow::addboard() { board = new boardui(ui->boardWidget); }
 
-gamewindow::~gamewindow()
-{
-    delete ui;
-}
+gamewindow::~gamewindow() { delete ui; }

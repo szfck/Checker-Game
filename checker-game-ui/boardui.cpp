@@ -1,9 +1,9 @@
 #include "boardui.h"
 #include <QDebug>
-#include <set>
 #include <QMessageBox>
+#include <set>
 
-cellui::cellui(QWidget* parent) : QLabel(parent) {
+cellui::cellui(QWidget *parent) : QLabel(parent) {
     count = 0;
     this->cell = cell;
     if (cell.status == PLAYER1) {
@@ -13,12 +13,10 @@ cellui::cellui(QWidget* parent) : QLabel(parent) {
     }
 }
 
-cellui::~cellui() {
-
-}
+cellui::~cellui() {}
 
 void cellui::mousePressEvent(QMouseEvent *e) {
-    static_cast<boardui*>(this->parent())->click(this);
+    static_cast<boardui *>(this->parent())->click(this);
 }
 
 void cellui::setOne() {
@@ -35,7 +33,8 @@ void cellui::setTwo() {
 
 void cellui::setRec() {
     this->clear();
-    this->setStyleSheet("QLabel {background-color: rgb(0, 255, 0);}:hover{background-color: rgb(170,85,127);}");
+    this->setStyleSheet("QLabel {background-color: rgb(0, 255, "
+                        "0);}:hover{background-color: rgb(170,85,127);}");
 }
 
 void cellui::display() {
@@ -54,14 +53,16 @@ void cellui::setEmpty() {
 }
 
 void cellui::displayBackground() {
-    if((cell.x + cell.y) % 2 == 0) {
-        this->setStyleSheet("QLabel {background-color: rgb(120, 120, 90);}:hover{background-color: rgb(170,85,127);}");
+    if ((cell.x + cell.y) % 2 == 0) {
+        this->setStyleSheet("QLabel {background-color: rgb(120, 120, "
+                            "90);}:hover{background-color: rgb(170,85,127);}");
     } else {
-        this->setStyleSheet("QLabel {background-color: rgb(211, 211, 158);}:hover{background-color: rgb(170,95,127);}");
+        this->setStyleSheet("QLabel {background-color: rgb(211, 211, "
+                            "158);}:hover{background-color: rgb(170,95,127);}");
     }
 }
 
-boardui::boardui(QWidget* parent) : QWidget(parent) {
+boardui::boardui(QWidget *parent) : QWidget(parent) {
     for (int i = 1; i <= 6; i++) {
         for (int j = 1; j <= 6; j++) {
             cells[i][j] = new cellui(this);
@@ -72,9 +73,7 @@ boardui::boardui(QWidget* parent) : QWidget(parent) {
     }
 }
 
-boardui::~boardui() {
-
-}
+boardui::~boardui() {}
 
 void boardui::newgame() {
     myGame.board.init(6, 6);
@@ -94,24 +93,28 @@ void boardui::display() {
     int x = 330, y = 105;
     {
         QLabel *outLabel = new QLabel(this);
-        outLabel->setGeometry(330 - x,105 - y,552,21);
-        outLabel->setStyleSheet("QLabel { background-color :rgb(170, 170, 127); color : black; }");
+        outLabel->setGeometry(330 - x, 105 - y, 552, 21);
+        outLabel->setStyleSheet(
+            "QLabel { background-color :rgb(170, 170, 127); color : black; }");
     }
     {
         QLabel *outLabel = new QLabel(this);
-        outLabel->setGeometry(330 - x,636 - y,552,21);
-        outLabel->setStyleSheet("QLabel { background-color :rgb(170, 170, 127); color : black; }");
+        outLabel->setGeometry(330 - x, 636 - y, 552, 21);
+        outLabel->setStyleSheet(
+            "QLabel { background-color :rgb(170, 170, 127); color : black; }");
     }
 
     {
         QLabel *outLabel = new QLabel(this);
-        outLabel->setGeometry(330 - x,126 - y,21,510);
-        outLabel->setStyleSheet("QLabel { background-color :rgb(170, 170, 127); color : black; }");
+        outLabel->setGeometry(330 - x, 126 - y, 21, 510);
+        outLabel->setStyleSheet(
+            "QLabel { background-color :rgb(170, 170, 127); color : black; }");
     }
     {
         QLabel *outLabel = new QLabel(this);
-        outLabel->setGeometry(861 - x,126 - y, 21, 510);
-        outLabel->setStyleSheet("QLabel { background-color :rgb(170, 170, 127); color : black; }");
+        outLabel->setGeometry(861 - x, 126 - y, 21, 510);
+        outLabel->setStyleSheet(
+            "QLabel { background-color :rgb(170, 170, 127); color : black; }");
     }
 
     // show cells
@@ -123,13 +126,9 @@ void boardui::display() {
     }
 }
 
-MyObject::MyObject() {
+MyObject::MyObject() {}
 
-}
-
-MyObject::~MyObject() {
-
-}
+MyObject::~MyObject() {}
 
 // Compute AI's next step
 void MyObject::compute() {
@@ -141,7 +140,7 @@ void MyObject::compute() {
 }
 
 void boardui::aiplay() {
-    MyObject* aicompute = new MyObject();
+    MyObject *aicompute = new MyObject();
     // creat a new thread for computing
     QThread *thread = new QThread;
     thread->start();
@@ -172,12 +171,15 @@ void boardui::click(cellui *current) {
     game::Cell cell = current->cell;
 
     // not human turn
-    if (myGame.getCurrentPlayer()->type != PLAYER1) return;
+    if (myGame.getCurrentPlayer()->type != PLAYER1)
+        return;
 
     if (pressCount == 0) {
-        if (cell.status != myGame.getCurrentPlayer()->type) return;
+        if (cell.status != myGame.getCurrentPlayer()->type)
+            return;
         auto list = myGame.board.getNextLegalCells(cell);
-        if (list.size() == 0) return;
+        if (list.size() == 0)
+            return;
 
         pressCount++;
         for (auto item : list) {
@@ -186,7 +188,8 @@ void boardui::click(cellui *current) {
         previous = cell;
     } else if (pressCount == 1) {
         // press same cell twice
-        if (cell.x == previous.x && cell.y == previous.y) {             pressCount = 0;
+        if (cell.x == previous.x && cell.y == previous.y) {
+            pressCount = 0;
             display();
             return;
         }
@@ -201,7 +204,7 @@ void boardui::click(cellui *current) {
         std::set<game::Cell> vis(list.begin(), list.end());
 
         // find next step to take
-        if (vis.find(cell) != vis.end()) {             
+        if (vis.find(cell) != vis.end()) {
             pressCount = 0;
             myGame.board.take(previous, cell);
             display();

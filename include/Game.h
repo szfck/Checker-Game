@@ -1,82 +1,79 @@
 #ifndef LIB_GAME_GAME
 #define LIB_GAME_GAME
 
-#include "Constant.h"
-#include "Strategy.h"
-#include "Player.h"
 #include "Board.h"
 #include "Cell.h"
+#include "Constant.h"
+#include "Player.h"
+#include "Strategy.h"
 #include <vector>
 
 namespace game {
 
-  class Game {
-    private:
+class Game {
+  private:
+    Player *currentPlayer;
 
-      Player* currentPlayer;
+  public:
+    Board board;
 
-    public:
+    // Game difficulty from 1(easy) to 3(hard) int difficulty;
+    int difficulty;
 
-      Board board;
+    // First player to play
+    Player *player1;
 
-      // Game difficulty from 1(easy) to 3(hard) int difficulty; 
-      int difficulty;
+    // Second player to play
+    Player *player2;
 
-      // First player to play
-      Player* player1; 
+    Player *getNextPlayer();
 
-      // Second player to play
-      Player* player2; 
+    Player *getCurrentPlayer();
 
-      Player* getNextPlayer();
+    /**
+     * Construct
+     *
+     * Create instance of player1(User) and player2(AI)
+     */
+    Game();
 
-      Player* getCurrentPlayer();
+    /**
+     * To set human player play first or second
+     *
+     * @param humanFirst true human play first, otherwise play second
+     */
+    void setHumanFirst(bool humanFirst);
 
-      /**
-       * Construct
-       * 
-       * Create instance of player1(User) and player2(AI)
-      */
-      Game();
+    /**
+     * To set game difficulty, from 1(easy) to 3(hard)
+     * @param difficulty
+     */
+    void setDifficulty(int difficulty);
 
-      /**
-       * To set human player play first or second
-       * 
-       * @param humanFirst true human play first, otherwise play second
-      */
-      void setHumanFirst(bool humanFirst);
+    /**
+     * Check if the game is finished or not
+     *
+     * @return Game status FIRSTWIN/SECONDWIN/DRAW/NONE
+     */
+    int gameStatus();
 
-      /**
-       * To set game difficulty, from 1(easy) to 3(hard)
-       * @param difficulty
-      */ 
-      void setDifficulty(int difficulty);
+    /**
+     * Show the game result
+     * @param result type of the result
+     */
+    void showResult(int result);
 
-      /**
-       * Check if the game is finished or not
-       * 
-       * @return Game status FIRSTWIN/SECONDWIN/DRAW/NONE
-      */
-      int gameStatus();
+    /**
+     * Main function to run the game
+     */
+    void run();
 
-      /**
-       * Show the game result
-       * @param result type of the result
-      */
-      void showResult(int result);
+    /**
+     * Show the board in command line
+     */
+    void showBoard();
+};
 
-      /**
-       * Main function to run the game
-      */
-      void run();
-
-      /**
-       * Show the board in command line
-      */
-      void showBoard();
-
-  };
-  
-}
+} // namespace game
 
 #endif

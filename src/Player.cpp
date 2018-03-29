@@ -4,14 +4,14 @@
 
 namespace game {
 
-  Player::Player(std::string name, int type, Strategy* strategy) {
+Player::Player(std::string name, int type, Strategy *strategy) {
     this->name = name;
     this->type = type;
     this->strategy = strategy;
-  }
-
-  std::pair<Cell, Cell> Player::play(const Board& board) {
-    return strategy->play(board, type);
-  }
-
 }
+
+std::pair<Cell, Cell> Player::play(const Board &board) {
+    return strategy->play(board, type);
+}
+
+} // namespace game

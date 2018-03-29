@@ -72,6 +72,11 @@ class Game {
      * Show the board in command line
      */
     void showBoard();
+
+    /**
+     * Show information in AI algorithm
+     */  
+    std::string getAIInfo();
 };
 
 } // namespace game

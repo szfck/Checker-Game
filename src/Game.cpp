@@ -110,6 +110,7 @@ void Game::run() {
 
         if (getCurrentPlayer()->type == PLAYER2) {
             printf("AI playing...\n");
+            printf("%s\n", getAIInfo().c_str());
         } else {
             printf("Human playing...\n");
         }
@@ -155,5 +156,19 @@ void Game::showBoard() {
         std::cout << line << std::endl;
     }
     std::cout << std::endl;
+}
+
+std::string Game::getAIInfo() {
+    int searchLevel = static_cast<AIStrategy *>(player2->strategy)->searchLevel;
+    int nodeGen = static_cast<AIStrategy *>(player2->strategy)->nodeGen;
+    int maxPrune = static_cast<AIStrategy *>(player2->strategy)->maxPrune;
+    int minPrune = static_cast<AIStrategy *>(player2->strategy)->minPrune;
+
+    char result[100];
+    sprintf(result,
+            "search depth is %d\nnode generated is %d\nmax prune "
+            "number is %d\nmin prune number is %d\n",
+            searchLevel, nodeGen, maxPrune, minPrune);
+    return std::string(result);
 }
 } // namespace game

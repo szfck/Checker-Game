@@ -6,8 +6,6 @@ namespace game {
 
 // For the command line interaction
 std::pair<Cell, Cell> PlayerStrategy::play(const Board &board, int type) {
-    // printf("human playing...\n\n");
-
     int sx, sy, dx, dy;
     while (true) {
         printf("please input the start (x, y)coordinate to take...\n\n");
@@ -86,7 +84,8 @@ std::pair<int, std::pair<Cell, Cell>> AIStrategy::max_value(const Board &board,
             maxdest = dest;
         }
         assert(value >= -Inf && value <= Inf);
-        if (value >= beta) {
+        if (value >= beta) { // max prune
+            maxPrune++;
             return {value, {maxstart, maxdest}};
         }
 
@@ -118,7 +117,8 @@ std::pair<int, std::pair<Cell, Cell>> AIStrategy::min_value(const Board &board,
             mindest = dest;
         }
         assert(value >= -Inf && value <= Inf);
-        if (value <= alpha) {
+        if (value <= alpha) { // min prune
+            minPrune++;
             return {value, {minstart, mindest}};
         }
 

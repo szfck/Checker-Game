@@ -6,6 +6,7 @@
 #include <QLabel>
 #include <QObject>
 #include <QThread>
+#include <QTextEdit>
 
 // global instance of Game
 extern game::Game myGame;
@@ -55,9 +56,10 @@ class boardui : public QWidget {
   private:
     int pressCount;
     game::Cell previous;
+    QTextEdit* information;
 
   public:
-    boardui(QWidget *parent = 0);
+    boardui(QWidget *parent = 0, QTextEdit* information = 0);
     ~boardui();
     cellui *cells[7][7] = {{nullptr}};
 

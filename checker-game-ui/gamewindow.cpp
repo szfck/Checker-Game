@@ -31,6 +31,6 @@ void gamewindow::replay() {
     board->newgame();
 }
 
-void gamewindow::addboard() { board = new boardui(ui->boardWidget); }
+void gamewindow::addboard() { board = new boardui(ui->boardWidget, ui->information); }
 
 gamewindow::~gamewindow() { delete ui; }

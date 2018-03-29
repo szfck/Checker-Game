@@ -62,7 +62,9 @@ void cellui::displayBackground() {
     }
 }
 
-boardui::boardui(QWidget *parent) : QWidget(parent) {
+boardui::boardui(QWidget *parent, QTextEdit* information) : QWidget(parent) {
+    this->information = information;
+
     for (int i = 1; i <= 6; i++) {
         for (int j = 1; j <= 6; j++) {
             cells[i][j] = new cellui(this);
@@ -152,6 +154,8 @@ void boardui::aiplay() {
 }
 
 void boardui::displayslot() {
+    information->setText(QString::fromStdString(myGame.getAIInfo()));
+
     this->display();
     int result = myGame.gameStatus();
     if (result != NONE) {

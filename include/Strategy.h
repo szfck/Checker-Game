@@ -53,7 +53,7 @@ class AIStrategy : public Strategy {
      * @param currentPlayer
      * @return all the possibilies to move for the currentPlayer
      */
-    std::vector<std::pair<Cell, Cell>> actions(const Board &board,
+    std::vector<std::pair<Cell, Cell> > actions(const Board &board,
                                                int currentPlayer);
 
     /**
@@ -65,7 +65,7 @@ class AIStrategy : public Strategy {
      * @param level
      * @return best action from start cell to dest cell for max player
      */
-    std::pair<int, std::pair<Cell, Cell>> max_value(const Board &board,
+    std::pair<int, std::pair<Cell, Cell> > max_value(const Board &board,
                                                     int currentPlayer,
                                                     int alpha, int beta,
                                                     int level);
@@ -79,7 +79,7 @@ class AIStrategy : public Strategy {
      * @param level
      * @return best action from start cell to dest cell for min player
      */
-    std::pair<int, std::pair<Cell, Cell>> min_value(const Board &board,
+    std::pair<int, std::pair<Cell, Cell> > min_value(const Board &board,
                                                     int currentPlayer,
                                                     int alpha, int beta,
                                                     int level);

@@ -2,6 +2,7 @@
 #include "Constant.h"
 #include <cassert>
 #include <iostream>
+#include <cmath>
 
 namespace game {
 
@@ -117,7 +118,7 @@ std::vector<Cell> Board::getNextLegalCells(Cell cell) const {
 
 void Board::take(Cell start, Cell dest) {
     // jumpr over a cell
-    if (abs(start.x - dest.x) != 1) {
+    if (std::abs(start.x - dest.x) != 1) {
         int x = (start.x + dest.x) / 2;
         int y = (start.y + dest.y) / 2;
         set(x, y, Cell(x, y, EMPTY));

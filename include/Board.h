@@ -9,7 +9,7 @@ namespace game {
 class Board {
 
   public:
-	std::vector<std::vector<Cell>> board;
+	std::vector<std::vector<Cell> > board;
 
     int row, col;
 

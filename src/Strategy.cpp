@@ -1,4 +1,5 @@
 #include "Strategy.h"
+#include <stdio.h>
 #include <cassert>
 #include <set>
 
@@ -23,7 +24,7 @@ std::pair<Cell, Cell> PlayerStrategy::play(const Board &board, int type) {
     auto nextList = board.getNextLegalCells(board.get(sx, sy));
 
     printf("please select dest in the list below\n");
-    std::set<std::pair<int, int>> choose;
+    std::set<std::pair<int, int> > choose;
     for (auto cell : nextList) {
         choose.insert(std::make_pair(cell.x, cell.y));
         printf("(%d, %d)\n", cell.x, cell.y);
@@ -60,7 +61,7 @@ std::pair<Cell, Cell> AIStrategy::alpha_beta_search(const Board &board,
     return res;
 }
 
-std::pair<int, std::pair<Cell, Cell>> AIStrategy::max_value(const Board &board,
+std::pair<int, std::pair<Cell, Cell> > AIStrategy::max_value(const Board &board,
                                                             int currentPlayer,
                                                             int alpha, int beta,
                                                             int level) {
@@ -94,7 +95,7 @@ std::pair<int, std::pair<Cell, Cell>> AIStrategy::max_value(const Board &board,
     return {value, {maxstart, maxdest}};
 }
 
-std::pair<int, std::pair<Cell, Cell>> AIStrategy::min_value(const Board &board,
+std::pair<int, std::pair<Cell, Cell> > AIStrategy::min_value(const Board &board,
                                                             int currentPlayer,
                                                             int alpha, int beta,
                                                             int level) {
@@ -127,9 +128,9 @@ std::pair<int, std::pair<Cell, Cell>> AIStrategy::min_value(const Board &board,
     return {value, {minstart, mindest}};
 }
 
-std::vector<std::pair<Cell, Cell>> AIStrategy::actions(const Board &board,
+std::vector<std::pair<Cell, Cell> > AIStrategy::actions(const Board &board,
                                                        int currentPlayer) {
-    std::vector<std::pair<Cell, Cell>> actionList;
+    std::vector<std::pair<Cell, Cell> > actionList;
     for (int i = 1; i <= board.row; i++) {
         for (int j = 1; j <= board.col; j++) {
             Cell start = board.get(i, j);

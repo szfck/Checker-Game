@@ -54,7 +54,7 @@ void Game::setDifficulty(int difficulty) {
     } else if (difficulty == 2) { // medium
         static_cast<AIStrategy *>(player2->strategy)->maxLevel = 6;
     } else { // hard
-        static_cast<AIStrategy *>(player2->strategy)->maxLevel = 9;
+        static_cast<AIStrategy *>(player2->strategy)->maxLevel = 15;
     }
 }
 

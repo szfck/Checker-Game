@@ -8,7 +8,7 @@ namespace game {
 // For the command line interaction
 std::pair<Cell, Cell> PlayerStrategy::play(const Board &board, int type) {
     int sx, sy, dx, dy;
-    while (true) {
+    while (true) { // get user start input
         printf("please input the start (x, y)coordinate to take...\n\n");
 
         scanf("%d%d", &sx, &sy);
@@ -30,7 +30,7 @@ std::pair<Cell, Cell> PlayerStrategy::play(const Board &board, int type) {
         printf("(%d, %d)\n", cell.x, cell.y);
     }
 
-    while (true) {
+    while (true) { // get user destination input
         scanf("%d%d", &dx, &dy);
         if (choose.find(std::make_pair(dx, dy)) == choose.end()) {
             printf("Not a valid position, please input again\n\n");
@@ -40,6 +40,7 @@ std::pair<Cell, Cell> PlayerStrategy::play(const Board &board, int type) {
         }
     }
 
+    // return user's choice
     return std::make_pair(board.get(sx, sy), board.get(dx, dy));
 }
 
@@ -52,10 +53,12 @@ std::pair<Cell, Cell> AIStrategy::alpha_beta_search(const Board &board,
                                                     int currentPlayer) {
     assert(currentPlayer == PLAYER2);
 
+    // initialization
     searchLevel = 0;
     nodeGen = 0;
     maxPrune = minPrune = 0;
 
+    // call max_value function
     auto ans = max_value(board, currentPlayer, -Inf, Inf, 0);
     auto res = ans.second;
     return res;
@@ -67,6 +70,8 @@ std::pair<int, std::pair<Cell, Cell> > AIStrategy::max_value(const Board &board,
                                                             int level) {
     searchLevel = std::max(level, searchLevel);
     nodeGen++;
+
+    // check if terminate or cut off happen
     if (board.isTerminate() || level >= maxLevel) {
         return {board.utility(currentPlayer), {}};
     }
@@ -76,6 +81,8 @@ std::pair<int, std::pair<Cell, Cell> > AIStrategy::max_value(const Board &board,
         Board tmpboard = board;
         Cell start = next.first, dest = next.second;
         tmpboard.take(start, dest);
+
+        // call min_value function
         auto result =
             min_value(tmpboard, currentPlayer ^ 1, alpha, beta, level + 1);
 
@@ -101,6 +108,7 @@ std::pair<int, std::pair<Cell, Cell> > AIStrategy::min_value(const Board &board,
                                                             int level) {
     searchLevel = std::max(level, searchLevel);
     nodeGen++;
+    // check if terminate or cut off happen
     if (board.isTerminate() || level >= maxLevel) {
         return {board.utility(currentPlayer), {}};
     }
@@ -110,6 +118,8 @@ std::pair<int, std::pair<Cell, Cell> > AIStrategy::min_value(const Board &board,
         Board tmpboard = board;
         Cell start = next.first, dest = next.second;
         tmpboard.take(start, dest);
+
+        // call max_value function
         auto result =
             max_value(tmpboard, currentPlayer ^ 1, alpha, beta, level + 1);
         if (result.first <= value) {
@@ -131,6 +141,8 @@ std::pair<int, std::pair<Cell, Cell> > AIStrategy::min_value(const Board &board,
 std::vector<std::pair<Cell, Cell> > AIStrategy::actions(const Board &board,
                                                        int currentPlayer) {
     std::vector<std::pair<Cell, Cell> > actionList;
+
+    // for every position, find possible move
     for (int i = 1; i <= board.row; i++) {
         for (int j = 1; j <= board.col; j++) {
             Cell start = board.get(i, j);

@@ -159,43 +159,54 @@ int Board::evaluate(int type) const {
     // first, consdier how many left
     int v1 = cellRemain(PLAYER2) - cellRemain(PLAYER1);
 
-    // weight1 is 10
-    int w1 = 10;
-
     // second, consider the position at leftmost or rightmose
     // since these cells can not be eaten
-    int v2 = 0;
 
     // weight2 is 3
-    int w2 = 3;
+    int v2 = 0;
+
+    // third, consdier the position of cells reach the bottom
+    // since these cells can not be eaten
+    int v3 = 0;
+
+    int w1 = 10, w2 = 9, w3 = 1;
 
     for (int i = 1; i <= row; i++) {
         for (int j = 1; j <= col; j++) {
             if (get(i, j).status == PLAYER1) {
-                if (j == 1 || j == col)
-                    v2++;
-            } else if (get(i, j).status == PLAYER2) {
-                if (j == 1 || j == col)
+                if (j == 1 || j == col) {
                     v2--;
+                }
+                if (i == row) v3--;
+            } else if (get(i, j).status == PLAYER2) {
+                if (j == 1 || j == col) {
+                    v2++;
+                }
+                if (i == 1) v3++;
             }
         }
     }
 
     // a weighted function for evaluation
-    return v1 * w1 + v2 * w2;
+    int res = v1 * w1 + v2 * w2 + v3 * w3;
+
+    return res;
 }
 
 int Board::utility(int type) const {
     int result = gameStatus();
+    int res;
     if (result == DRAW)
-        return 0;
+        res = 0;
     else if (result == SECONDWIN)
-        return Inf;
+        res = Inf;
     else if (result == FIRSTWIN)
-        return -Inf;
+        res = -Inf;
     else {
         return evaluate(PLAYER2);
     }
+
+    return res;
 }
 
 bool Board::isTerminate() const { return gameStatus() != NONE; }

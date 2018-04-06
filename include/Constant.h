@@ -21,7 +21,7 @@ namespace game {
 /**
  * min max alg infinity
  */
-#define Inf 200
+#define Inf 300
 }
 
 #endif

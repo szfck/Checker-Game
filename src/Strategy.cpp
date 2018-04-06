@@ -2,12 +2,43 @@
 #include <stdio.h>
 #include <cassert>
 #include <set>
+#include  <ctime> 
 
 namespace game {
 
 // For the command line interaction
 std::pair<Cell, Cell> PlayerStrategy::play(const Board &board, int type) {
     int sx, sy, dx, dy;
+    
+
+    // --------------- mock play
+    // {
+    //     int mock = true;
+    //     srand((unsigned)time(0)); 
+    //     std::vector<std::pair<Cell, Cell> > actionList;
+
+    //     // for every position, find possible move
+    //     for (int i = 1; i <= board.row; i++) {
+    //         for (int j = 1; j <= board.col; j++) {
+    //             Cell start = board.get(i, j);
+    //             if (start.status == PLAYER1) {
+
+    //                 auto nextStep = board.getNextLegalCells(start);
+
+    //                 for (auto next : nextStep) {
+    //                     actionList.push_back(std::make_pair(start, next));
+    //                 }
+    //             }
+    //         }
+    //     } 
+    //     int choose = rand() % (int)actionList.size();
+    //     if (mock) {
+    //         return std::make_pair(actionList[choose].first, actionList[choose].second); 
+    //     }
+    // }
+    // ---------------- mock play
+
+
     while (true) { // get user start input
         printf("please input the start (x, y)coordinate to take...\n\n");
 

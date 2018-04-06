@@ -169,7 +169,7 @@ int Board::evaluate(int type) const {
     // since these cells can not be eaten
     int v3 = 0;
 
-    int w1 = 10, w2 = 9, w3 = 1;
+    int w1 = 11, w2 = 9, w3 = 2;
 
     for (int i = 1; i <= row; i++) {
         for (int j = 1; j <= col; j++) {
